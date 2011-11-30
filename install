@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+(
+cd ~/env/dot
+for FILE in *; do
+	cp $FILE ~/.$FILE
+done
+)
+
+~/env/git-aliases
+
+if [[ -f ~/.bashrc ]]; then
+	grep -q "source $HOME/env/bashrc" ~/.bashrc || echo "source $HOME/env/bashrc" >> ~/.bashrc
+	. ~/.bashrc
+fi
