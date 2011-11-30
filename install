@@ -7,6 +7,11 @@ for FILE in *; do
 done
 )
 
+if [[ ! -d ~/bin ]]; then
+	mkdir ~/bin
+fi
+cp ~/env/bin/* ~/bin
+
 ~/env/git-aliases
 
 if [[ ! -f ~/.bashrc ]]; then
