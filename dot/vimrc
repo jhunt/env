@@ -1,27 +1,29 @@
 "
-" .vimrc - Vim Runtime Control file
+" ~/.vimrc - Vim Runtime Control file
 "
 " These are my handy-dandy settings for Vim
-"                               -jrh
-" author:    James Hunt <JamesHunt@affina.com>
-" created:   Fri Jun 27 12:30:28 CDT 2008
-" updated:   Fri Jun 27 12:31:30 CDT 2008, jrh: Fixed the <F3> keymap
-" updated:   Fri Jun 27 16:04:51 CDT 2008, jrh: Changed to ; convention
-" updated:   Sat Dec 19 18:47:02 CST 2009, jrh: Adding git COMMIT_EDITMSG params
-" updated:   Tue Jan 12 22:21:14 CST 2010, jrh: Added TlistOpen for Ruby .rb files
 "
-
-
+" author:    James Hunt <jhunt@synacor.com>
+" created:   2008-06-27
+" updated:   2011-11-10, jrh: port to Synacor; Updated some F2/F3/F9 to be more useful
+"
 
 "################################################################################
 "#### GLOBAL PARAMETERS #########################################################
 
-" Tabs are 8 columns wide, and use the TAB character
-set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
+" Tabs are 4 columns wide, and use the TAB character
+set tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
 
 " Disable all sorts of bells and visual alerts
 set visualbell t_vb=
 set novisualbell
+
+" Autoindent, I love you
+filetype indent on
+set autoindent
+
+" Add 'o' formatoption to continue comment characters during F2/F3
+set formatoptions=tcqo
 
 " Turn on search term highlighting
 set hlsearch
@@ -38,13 +40,14 @@ set number
 set numberwidth=1
 highlight LineNr ctermfg=DarkGray
 
-filetype indent on
-set autoindent
-
 " Turn on syntax higlighting on a dark background.
 " Some update must have turned this off, jrh - 2008-11-28
 syntax on
 set background=dark
+" ... and don't forget gvim
+if has('gui_running')
+	color slate
+endif
 
 " Turn on modeline processing, so we can force certain vim
 " parameters when we don't match an autocommand.
@@ -63,29 +66,6 @@ set stl=[%n]\ file:%-50F\ %y%r%m\ byte:0x%B%=line:%l:%c/%L\ %p%%
 
 
 "################################################################################
-"#### AUTOCOMMANDS ##############################################################
-
-" Turn on ctags browser for C source code files.
-au BufRead *.c,*.h                            call s:SetCOpts()
-
-" Use two-space expanded tabs for Ruby code
-au BufRead,BufNewFile *.rb,*.erb              call s:SetRubyOpts()
-
-" Wrap text in git commit message at 72 characters, as I type.
-au BufNewFile,BufRead .git/COMMIT_EDITMSG     set tw=72 wrap
-
-" Wrap text in .textile files to 76 characters, as typed.
-" - On second thought, don't textwrap it, because jekyll puts <br />
-"   tags in for every newline...
-"au BufNewFile,BufRead *.textile               set tw=76 wrap
-
-
-" Use 2 spaces instead of tab
-au BufNewFile,BufRead *.html                  set et ts=2 sw=2
-au BufNewFile,BufRead *.lisp                  set et ts=2 sw=2 sts=2 ai
-
-
-"################################################################################
 "#### MAPPED COMMANDS ###########################################################
 
 """ ###   Custom Vim Environment Header Helpers   ############################
@@ -95,46 +75,37 @@ map <F7> :!/bin/sh -c 'clear && grep ^\"\"\" ~/.vimrc \| sed -e s/^...//'<CR>
 """ ###   File Creation / Update Header Helpers   ############################
 """
 """   F2 - insert header listing author and creation date.
-map <F2> o author:    James Hunt <JamesHunt@affina.com><Esc>ocreated:   <Esc>:read !date<CR>kJ<Esc>
-
+map <F2> o author:  James Hunt <jhunt@synacor.com><Esc>ocreated: <Esc>:read !date +"\%Y-\%m-\%d"<CR>kJ<Esc>
 """   F3 - insert a header line listing an update
-map <F3> oupdated:   <Esc>:read !date<CR>kJA, jrh: 
-
-"""   F8 - insert [ jrh, <date> ] at cursor
-map <F8> A<Tab>[ jrh,<esc>:read !date<CR>kJA ]<Esc>o
+map <F3> oupdated: <Esc>:read !date +"\%Y-\%m-\%d"<CR>kJA, jrh: 
+"""   F9 - insert [ jrh, <date> ] at cursor
+map <F9> A[ jrh,<esc>:read !date +"\%Y-\%m-\%d"<CR>kJA ]<Esc>o
 
 """
 """
 """ ###   Easy .vimrc Management   ###########################################
 """
+
 """   ;v - Open .vimrc in a new buffer for editing
 map ;v :sp ~/.vimrc<CR>
 
 """   ;u - Reload .vimrc (in current buffer)
 map ;u :source ~/.vimrc<CR>
 
+"""
+"""
+""" ###   Copy/Paste Support   ###############################################
+"""
 
-"""
-"""
-""" ###   Copy/Paste Helpers   ###############################################
-"""
-"""   ;cp - Turn off line-numbering and 'hidden' characters (for copying)
+"""   ;cp - Set for COPY mode (turn off non-printing chars)
 map ;cp :set nonumber<CR>:set nolist<CR>
-"""   ;pc - Turn line-numbering and 'hidden' characters back on (reverse of ;cp)
+
+"""   ;pc - Opposite of ;cp - turns on non-printing chars
 map ;pc :set number<CR>:set list<CR>
 
-" Comment out a block of code, in VISUAL MODE
-"  (makes use of the jrh-blockcomment Plugin, a hacked version of
-"   http://vim.sourceforge.net/scripts/script.php?script_id=473)
-map <C-G> :call Comment()<CR>
-map <C-H> :call UnComment()<CR>
-
-" Collapse successive blank lines
-"map ;b GoZ<Esc>:g/^$/.,/./-j<CR>Gdd
-
 """
 """
-""" ###   Miscellaneous / Experimental Stuff   ###############################
+""" ###   Whitespace Management   ############################################
 """
 
 """   ;n - Collapse successive empty (spaces or tabs allowed) lines
@@ -143,50 +114,67 @@ map ;n GoZ<Esc>:g/^[ <Tab>]*$/.,/[^ <Tab>]/-j<CR>Gdd
 """   ;c - Clear leading spaces and enter insertion mode
 map ;c :,s/^[ <Tab>]*//g<CR>i
 
+"""
+"""
+""" ###   Miscellany   #######################################################
+"""
+
 """   ;h - Write current file out in highlighted HTML
 map ;h :source $VIM/vimcurrent/syntax/2html.vim<CR>:w<CR>:close<CR>
 
-"""   Ctrl-R - Force re-indention of current page
-map <C-R> gg=G
 
-" Indent whole buffer.
-function! IndentFile()
-let cursor = line('.')
-exe ":%s/\\s\\+$//"
-exe "norm gg=G".cursor."G"
-exe ":%retab"
-endfunction
+"################################################################################
+"#### AUTOCOMMANDS ##############################################################
 
-command! -complete=shellcmd -nargs=* Make call s:RunShellCommand('make ' . <q-args>)
-command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
-function! s:RunShellCommand(cmdline)
-	echo a:cmdline
-	let expanded_cmdline = a:cmdline
-	for part in split(a:cmdline, ' ')
-		if part[0] =~ '\v[%#<]'
-			let expanded_part = fnameescape(expand(part))
-			let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
-		endif
-	endfor
-	botright new
-	setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
-"	call setline(1, 'You entered:    ' . a:cmdline)
-"	call setline(2, 'Expanded Form:  ' .expanded_cmdline)
-"	call setline(3,substitute(getline(2),'.','=','g'))
-	execute '$read !'. expanded_cmdline
-	setlocal nomodifiable
-	1
-endfunction
+" Wrap text in git commit message at 72 characters, as I type.
+au BufNewFile,BufRead .git/COMMIT_EDITMSG     set tw=72 wrap
 
 
-function! s:SetRubyOpts()
-	set tabstop=2 shiftwidth=2 expandtab
-	set softtabstop=2
-	TlistOpen
-endfunction
 
-function! s:SetCOpts()
-	set foldmethod=syntax
-	set foldlevel=8
-	TlistOpen
+"################################################################################
+"#### HEX MODE ##################################################################
+
+nnoremap <C-H> :Hexmode<CR>
+inoremap <C-H> <Esc>:Hexmode<CR>
+vnoremap <C-H> :<C-U>Hexmode<CR>
+
+" ex command for toggling hex mode - define mapping if desired
+command -bar Hexmode call ToggleHex()
+
+" helper function to toggle hex mode
+function ToggleHex()
+  " hex mode should be considered a read-only operation
+  " save values for modified and read-only for restoration later,
+  " and clear the read-only flag for now
+  let l:modified=&mod
+  let l:oldreadonly=&readonly
+  let &readonly=0
+  let l:oldmodifiable=&modifiable
+  let &modifiable=1
+  if !exists("b:editHex") || !b:editHex
+    " save old options
+    let b:oldft=&ft
+    let b:oldbin=&bin
+    " set new options
+    setlocal binary " make sure it overrides any textwidth, etc.
+    let &ft="xxd"
+    " set status
+    let b:editHex=1
+    " switch to hex editor
+    %!xxd -g 1
+  else
+    " restore old options
+    let &ft=b:oldft
+    if !b:oldbin
+      setlocal nobinary
+    endif
+    " set status
+    let b:editHex=0
+    " return to normal editing
+    %!xxd -r
+  endif
+  " restore values for modified and read only state
+  let &mod=l:modified
+  let &readonly=l:oldreadonly
+  let &modifiable=l:oldmodifiable
 endfunction
