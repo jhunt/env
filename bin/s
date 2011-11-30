@@ -18,7 +18,8 @@ my $i = 1;
 my @buffer = `screen -ls`;
 
 if ($buffer[0] =~ m/No Sockets found/) {
-    die("  No existing SCREEN session to reattach to...\n");
+    # no screens?  start a new one!
+    `screen`; exit $?;
 }
 
 print <<'EOS';
