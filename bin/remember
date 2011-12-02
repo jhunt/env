@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# remember - Remember a host shortcut for mssh
+#
+# author:  James Hunt <jhunt@synacor.com>
+# created: 2011-11-11
+#
+
+usage()
+{
+	echo "USAGE: remember --list"
+	echo "       remember <hostname>"
+	echo "(will symlink <hostname> to mssh for great laziness!)"
+}
+
+MSSH="mssh"
+REMOTE_HOST=$1
+if [[ -z "$REMOTE_HOST" ]]; then
+	usage
+	exit 1
+fi
+
+cd ~/bin
+if [[ ! -x $MSSH ]]; then
+	echo "Could not find ~/bin/$MSSH"
+	exit 1
+fi
+
+case "$REMOTE_HOST" in
+--list)
+	find . -lname $MSSH | sed -e 's:^./::' | sort
+	;;
+
+-*)
+	usage
+	exit 1
+	;;
+
+*)
+	echo "remembering $REMOTE_HOST"
+	ln -s mssh $REMOTE_HOST
+	;;
+esac

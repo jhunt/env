@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#
+# forget - Forget a host shortcut for mssh
+#
+# author:  James Hunt <jhunt@synacor.com>
+# created: 2011-11-11
+#
+
+usage()
+{
+	echo "USAGE: forget <hostname>"
+	echo "(forget the laziness for <hostname>;  see remember --help)"
+}
+
+MSSH="mssh"
+REMOTE_HOST=$1
+if [[ -z "$REMOTE_HOST" ]]; then
+	usage
+	exit 1
+fi
+
+for FORGETME in $(find ~/bin -name "$REMOTE_HOST" -lname "$MSSH"); do
+	echo "forgetting $(basename $FORGETME)"
+	rm $FORGETME
+done
+
+if [[ -z "$FORGETME" ]]; then
+	echo "don't remember $REMOTE_HOST, apparently.  oh well."
+fi

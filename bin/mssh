@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#
+# mssh - Multi-SSH tool
+#
+# author:  James Hunt <jhunt@synacor.com>
+# created: 2011-11-11
+#
+# The mssh tool promotes laziness with respect to
+# the constant invocation of ssh <hostname>
+#
+# Through the `remember` and `forget` utilities,
+# symlinks will be created in ~/bin, so that hosts
+# can be called by name to invoke SSH.
+#
+# Instead of calling this:
+#  $ ssh re02.admin
+#
+# Do this once:
+#  $ remember re02.admin
+#
+# And, forever after, just call re02.admin:
+#  $ re02.admin
+#
+
+MSSH=mssh
+REMOTE_HOST=$(basename $0);
+REMOTE_USER=$USER;
+
+# this part is specific to the jhunt/jrhunt discrepency
+# if you are not jhunt, and don't know what mango is,
+# please disregard.
+if [[ "$REMOTE_HOST" == "mango" ]]; then
+	REMOTE_USER=jrhunt
+fi
+
+if [[ "$REMOTE_HOST" == "$MSSH" ]]; then
+	echo "Don't use mssh directly"
+	echo "Use \`remember\` and \`forget\`"
+	exit 1
+fi
+
+echo "connect $REMOTE_USER@$REMOTE_HOST"
+exec ssh $REMOTE_USER@$REMOTE_HOST
