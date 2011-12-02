@@ -10,6 +10,7 @@ export EDITOR=vim
 alias ll='ls -l'
 alias la='ls -la'
 alias lr='ls -ltr'
+alias diff='diff -u'
 
 # Bash Prompts ########################################
 
