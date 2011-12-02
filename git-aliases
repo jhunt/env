@@ -1,5 +1,6 @@
 #!/bin/sh
 
+git config --global alias.stat "status"
 git config --global alias.st "status"
 git config --global alias.ci "commit"
 git config --global alias.br "branch"
