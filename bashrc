@@ -14,17 +14,10 @@ alias diff='diff -u'
 
 # Bash Prompts ########################################
 
-# figure out exit status of last command
-function ps1_exit {
-	if [[ $? = 0 ]]; then echo -e '\033[01;33m0\033[00m'
-	else echo -e "\\033[01;31m$?\\033[00m"
-	fi
-}
-
 #export PS1='\!:$?:\$ '
-export PS1='\[\033[01;33m\]\!\[\033[00m\]:$(ps1_exit):\[\033[01;32m\]jh@\h\[\033[01;34m\] \w\[\033[00m\] \[\033[01;34m\]\$\[\033[00m\] '
+export PS1='\[\e[01;33m\]\!\[\e[00m\]:`r=$?; test $r -ne 0 && echo "\[\e[1;31m\]$r\[\e[00m\]" || echo "\[\e[01;33m\]$r\[\e[00m\]"`:\[\e[01;32m\]jh@\h\[\e[01;34m\] \w\[\e[00m\] \[\e[01;34m\]\$\[\e[00m\] '
 
-export PS0="%{\[\033[1;34m\]%b\[\033[00m\]:\[\033[1;33m\]%i\[\033[00m\]%}%{\[\033[1;31m\]%c%u%f%t\[\033[00m\]) %}$PS1"
+export PS0="%{%[\e[1;34m%]%b%[\e[00m%]:%[\e[1;33m%]%i%[\e[00m%]%}%{%[\e[1;31m%]%c%u%f%t%[\e[00m%]) %}$PS1"
 if [[ -z $ORIG_PROMPT_COMMAND ]]; then
 	ORIG_PROMPT_COMMAND=$PROMPT_COMMAND
 fi
