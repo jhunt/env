@@ -1,11 +1,14 @@
 #!/bin/sh
 
-git config --global alias.stat "status"
 git config --global alias.st "status"
 git config --global alias.ci "commit"
 git config --global alias.br "branch"
 git config --global alias.co "checkout"
-git config --global alias.df "diff"
+
+git config --global alias.df  "diff"
+git config --global alias.dfc "diff --cached"
+git config --global alias.dfp "diff --stat -p"
+
 git config --global alias.who "shortlog -s --"
 git config --global alias.lg "log -n 20 --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset %an' --abbrev-commit --date=relative"
 
@@ -17,5 +20,6 @@ git config --global alias.log1 "log --pretty=oneline --abbrev-commit --decorate"
 git config --global alias.lc "log ORIG_HEAD.. --stat --no-merges"
 git config --global alias.undo "reset --hard"
 
-
-
+git config --global alias.ss  "stash save"
+git config --global alias.sp  "stash pop"
+git config --global alias.sls "stash list"
