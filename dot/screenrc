@@ -1,8 +1,34 @@
-#change the hardstatus settings to give an window list at the bottom of the
-##screen, with the time and date and with the current window highlighted
+#
+# .screenrc - Customizations for screen
+#
+# author:  James Hunt <jhunt@synacor.com>
+# created: 2011-12-27
+#
+# This configuration was shamelessly ripped from an unnamed
+# RE.  If I ever get the time (ha!) I hope to come back here
+# and actually customize for me.
+#
+
+#######################################################################
+
+# SSH-Agent Magic!
+#   see ~/env/bashrc for the other half;
+#   shamelessly stolen from http://www.jukie.net/bart/blog/screen-ssh-agent
+
+unsetenv SSH_AUTH_SOCK
+setenv SSH_AUTH_SOCK $HOME/.screen/ssh-auth-sock.$HOSTNAME
+
+#######################################################################
+
+# Always show the bottom status line, with window list and date/time
 hardstatus alwayslastline
 hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
 shelltitle "$ |bash"
+
+# Increase the scrollback for copy-paste / review
 defscrollback 50000
+
+# Turn off that infernal visual bell
 vbell off
 
