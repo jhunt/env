@@ -3,6 +3,13 @@
 use strict;
 use warnings;
 
+my $screen = `which screen`;
+chomp $screen;
+if (! -x $screen) {
+	print "screen binary not found;  is screen installed?\n";
+	exit;
+}
+
 if ($ARGV[0] && $ARGV[0] eq '-h') {
     print <<'EOS';
 Usage: s [id|name]
@@ -15,7 +22,7 @@ EOS
 my @sessions;
 my $i = 1;
 
-my @buffer = `screen -ls`;
+my @buffer = `screen -ls 2>/dev/null`;
 
 if ($buffer[0] =~ m/No Sockets found/) {
     # no screens?  start a new one!
