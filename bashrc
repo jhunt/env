@@ -22,3 +22,10 @@ if [[ -z $ORIG_PROMPT_COMMAND && ! -z $PROMPT_COMMAND ]]; then
 	ORIG_PROMPT_COMMAND="$PROMPT_COMMAND;"
 fi
 export PROMPT_COMMAND=$ORIG_PROMPT_COMMAND'export PS1=$($HOME/env/gitprompt c=\+ u=\* statuscount=1)'
+
+
+
+echo $PATH | grep -q "$HOME/bin";
+if [[ $? != 0 ]]; then
+	export PATH="$PATH:$HOME/bin"
+fi
