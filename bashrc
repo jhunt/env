@@ -28,5 +28,7 @@ export PROMPT_COMMAND=$ORIG_PROMPT_COMMAND'export PS1=$($HOME/env/gitprompt c=\+
 _ssh_auth_save() {
 	mkdir -p $HOME/.screen
 	ln -sf "$SSH_AUTH_SOCK" "$HOME/.screen/ssh-auth-sock.$HOSTNAME"
+	echo "auth sock: $SSH_AUTH_SOCK"
 }
 alias screen='_ssh_auth_save; export HOSTNAME=$(hostname); screen'
+alias s='_ssh_auth_save; export HOSTNAME=$(hostname); s'
