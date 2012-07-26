@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#
+# Clone my github repos
+#
+
+if [[ $# = 0 ]]; then
+	echo "USAGE: $0 <repo>"
+	exit 1
+fi
+
+for REPO in "$@"; do
+	echo "git clone git@github.com:filefrog/$REPO.git"
+	git clone git@github.com:filefrog/$REPO.git
+done
