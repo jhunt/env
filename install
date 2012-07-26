@@ -12,7 +12,7 @@ if [[ ! -d ~/bin ]]; then
 fi
 cp ~/env/bin/* ~/bin
 
-~/env/git-aliases
+~/env/git-config
 
 if [[ ! -f ~/.bashrc ]]; then
 	touch ~/.bashrc

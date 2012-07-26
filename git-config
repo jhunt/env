@@ -1,5 +1,8 @@
 #!/bin/sh
 
+git config --global user.name  "James Hunt"
+git config --global user.email james@niftylogic.com
+
 git config --global alias.st "status"
 git config --global alias.ci "commit"
 git config --global alias.br "branch"
@@ -23,3 +26,17 @@ git config --global alias.undo "reset --hard"
 git config --global alias.ss  "stash save"
 git config --global alias.sp  "stash pop"
 git config --global alias.sls "stash list"
+
+git config --global color.ui auto
+git config --global color.diff auto
+
+git config --global color.diff.new "green bold"
+git config --global color.diff.old "red bold"
+git config --global color.diff.meta "white"
+git config --global color.diff.func "magenta bold"
+git config --global color.diff.frag "yellow bold"
+git config --global color.diff.whitespace "blue reverse"
+
+git config --global color.status.added "green bold"
+git config --global color.status.changed "red bold"
+git config --global color.status.untracked "cyan bold"
