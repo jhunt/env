@@ -1,0 +1,110 @@
+#!/bin/bash
+
+#
+# enc - Encrypted Volume Management
+#
+# author:  James Hunt <jhunt@synacor.com>
+# created: 2012-07-25
+#
+# Usage is pretty straightforward - enc (on|off) vol [vol ...]
+# Each <vol> is taken as a path relative to $HOME.  The encfs
+# volume must already exist for enc to work its magic.
+#
+# Examples:
+#
+# Mount encrypted volume $HOME/.scret on $HOME/secret:
+# $ enc on secret
+#
+# Mount multiple encrypted volumes:
+# $ enc on lies damn_lies statistics
+#
+# Dismount $HOME/secret
+# $ enc off secret
+#
+# Calling enc with no options will print out a list of encfs
+# volumes currently mounted inside $HOME:
+#
+# $ enc on secret
+# Mounting 'secret' to /home/jrhunt/secret
+# EncFS Password:
+# $ enc
+# /home/jrhunt/secret
+#
+# Calling `enc off` with no volumes causes all encfs volumes
+# mounted under $HOME to be dismounted.  Useful for logout!
+#
+
+show_mounted() {
+	/bin/mount | grep "^encfs on $HOME" | awk '{print $3}'
+}
+
+enc_on() {
+	local mount=$1
+	echo "Mounting '$mount' to $HOME/$mount"
+	/usr/bin/encfs $HOME/{.,}$mount
+}
+
+enc_off() {
+	local path=$1
+	if [[ -d $path ]]; then
+		echo "Unmounting ${path##$HOME/}"
+	else
+		echo "Unmounting $path"
+		path="$HOME/$path"
+	fi
+	/bin/fusermount -u $path
+}
+
+enc_check() {
+	local mount=$1
+	if [[ ! -d "$HOME/.$mount" || ! -d "$HOME/$mount" ]]; then
+		echo "$mount - not really an encrypted volume"
+		exit 2
+	fi
+}
+
+if [[ $# = 0 ]]; then
+	show_mounted
+	exit 0
+fi
+
+ACTION=$1
+shift
+
+case $ACTION in
+on|off)
+	;;
+*)
+	echo "USAGE: $0 (on|off) path [path ...]"
+	exit 1
+esac
+
+case $ACTION in
+on)
+	if [[ $# = 0 ]]; then
+		echo "Cowardly refusing to try to mount all encrypted volumes"
+		exit 3
+	fi
+
+	for MOUNT in "$@"; do
+		enc_check $MOUNT
+		enc_on $MOUNT
+	done
+
+	;;
+
+off)
+	if [[ $# = 0 ]]; then
+		for VOL in $(show_mounted); do
+			enc_off $VOL
+		done
+		echo "No encrypted volumes mounted"
+
+	else
+		for MOUNT in "$@"; do
+			enc_off $MOUNT
+		done
+	fi
+	;;
+
+esac
