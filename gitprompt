@@ -2,6 +2,9 @@
 
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0; # not running under some shell
+
+eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
+    if 0; # not running under some shell
 use strict;
 
 # Examples:
@@ -149,9 +152,6 @@ sub gitdata {
 
   ### collect branch data ###
   chomp(my $commitid = `git rev-parse --short HEAD 2>&1`);
-  if ($commitid =~ /fatal: Needed a single revision/i) {
-    $commitid = "initial";
-  }
   my $branch = $commitid; #fallback value
   if ($headref =~ /fatal: ref HEAD is not a symbolic ref/i) {
     # find gitdir
@@ -207,12 +207,12 @@ sub gitdata {
     # if it terminated, parse output
     my ($section);
     foreach (@status) {
-      if (/^\# (\S.+?)\:\s*$/ && exists $sectionmap{$1}) {
+      if (/^(?:\# )?(\S.+?)\:\s*$/ && exists $sectionmap{$1}) {
         $section = $sectionmap{$1};
-      } elsif ($section && /^\#\t\S/) {
+      } elsif ($section && /^\#?\t\S/) {
         $statuscount{$section}++;
         $valid = 1;
-      } elsif (/^nothing to commit\b/) {
+      } elsif (/^nothing (added )?to commit\b/) {
         $valid = 1;
       } elsif (/\bis (ahead|behind) .+ by (\d+) commits?(\,? and can be fast\-forwarded)?/) {
         $statuscount{($1 eq 'ahead') ? 'A' : 'B'} = $2;
@@ -236,7 +236,7 @@ sub gitdata {
     } elsif ($status[0] =~ /must be run in a work tree/) {
       $timeout = $opt{n};
     } else {
-      print "\\[\e[41m\\]!! gitprompt.pl: \\`git status\' returned with exit code $statusexitcode and message:\n$status[0]\\[\e[0m\\]";
+      print "\\[\e[41m\\]!! gitprompt.pl: \\`git status\' returned xxxwith exit code $statusexitcode and message:\n$status[0]\\[\e[0m\\]";
       $timeout = "\\[\e[41m\\]!$statusexitcode!\\[\e[0m\\]";
     }
   }
