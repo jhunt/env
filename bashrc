@@ -10,7 +10,12 @@ export EDITOR=vim
 alias ll='ls -l'
 alias la='ls -la'
 alias lr='ls -ltr'
-alias diff='diff -u'
+if [[ -x /usr/bin/colordiff ]]; then
+	alias diff='/usr/bin/colordiff -u'
+else
+	alias diff='/usr/bin/diff -u'
+fi
+alias vgmem='valgrind --leak-check=full --show-reachable=yes'
 
 # Screen SSH_AUTH_SOCK Support #######################
 
@@ -38,3 +43,5 @@ echo $PATH | grep -q "$HOME/bin";
 if [[ $? != 0 ]]; then
 	export PATH="$PATH:$HOME/bin"
 fi
+
+source $HOME/env/git.bashrc
