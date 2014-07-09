@@ -38,11 +38,17 @@ export PS1=$(echo "+%B[\t]:%Y[\!]:$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo
 type git >/dev/null 2>&1
 if [[ $? == 0 ]]; then
 	export PS0="%{%[\e[1;34m%]%b%[\e[00m%]:%[\e[1;33m%]%i%[\e[00m%]%}%{%[\e[1;31m%]%c%u%f%t%[\e[00m%]) %}$PS1 "
-	if [[ -z $ORIG_PROMPT_COMMAND && ! -z $PROMPT_COMMAND ]]; then
-		ORIG_PROMPT_COMMAND="$PROMPT_COMMAND;"
-	fi
-	export PROMPT_COMMAND=$ORIG_PROMPT_COMMAND'export PS1=$($HOME/env/gitprompt c=\+ u=\* statuscount=1)'
+	export PROMPT_COMMAND='export PS1=$($HOME/env/gitprompt c=\+ u=\* statuscount=1)'
 fi
+
+case $TERM in
+screen)
+	if [[ -n $PROMPT_COMMAND ]]; then
+		export PROMPT_COMMAND="$PROMPT_COMMAND;";
+	fi
+	export PROMPT_COMMAND=$PROMPT_COMMAND'echo -ne "\033]2;${USER}@${HOSTNAME}: ${PWD}\033k${USER}@${HOSTNAME}\033\\"'
+	;;
+esac
 
 echo $PATH | grep -q "$HOME/bin";
 if [[ $? != 0 ]]; then
