@@ -29,11 +29,11 @@ alias s='_ssh_auth_save; export HOSTNAME=$(hostname); s'
 
 # Bash Prompts ########################################
 
-export PROMPT_HOST=$(hostname -f | sed -e 's/\.synacor\.com//')
-export PROMPT_ADDR=$(/sbin/ip addr show 2>/dev/null | awk '/inet.*(eth|bond|wlan)/ { print $2; exit }')
+PROMPT_HOST=$(hostname -f | sed -e 's/\.niftylogic\.net//')
+PROMPT_ADDR=$(/sbin/ip addr show 2>/dev/null | awk '/inet.*(eth|bond|wlan)/ { print $2; exit }')
 [ -z $PROMPT_ADDR ] || PROMPT_ADDR="$PROMPT_ADDR "
 
-export PS1=$(echo "+%B[\t]:%Y[\!]:$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]") %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
+export PS1=$(echo "+%B[\t]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'" %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
 
 type git >/dev/null 2>&1
 if [[ $? == 0 ]]; then
@@ -46,7 +46,7 @@ screen)
 	if [[ -n $PROMPT_COMMAND ]]; then
 		export PROMPT_COMMAND="$PROMPT_COMMAND;";
 	fi
-	export PROMPT_COMMAND=$PROMPT_COMMAND'echo -ne "\033]2;${USER}@${HOSTNAME}: ${PWD}\033k${USER}@${HOSTNAME}\033\\"'
+	export PROMPT_COMMAND=$PROMPT_COMMAND'echo -ne "\033]2;${USER}@${PROMPT_HOST} ${PROMPT_ADDR}${PWD}\033k${PROMPT_HOST}\033\\"'
 	;;
 esac
 

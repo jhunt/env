@@ -29,4 +29,4 @@ my %COLORS = (
 	W => '01;37', # white (BOLD)
 );
 
-s/%([krgybmpcw])\[(.*?)\]/"\e[".$COLORS{$1}."m$2\e[00m"/ige;
+s/%([krgybmpcw])\[(.*?)\]/"\\[\e[".$COLORS{$1}."m\\]$2\\[\e[00m\\]"/ige;
