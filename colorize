@@ -1,0 +1,32 @@
+#!/usr/bin/perl -p
+use strict;
+
+my %COLORS = (
+	k => '00;30', # black
+	K => '01;30', # black (BOLD)
+
+	r => '00;31', # red
+	R => '01;31', # red (BOLD)
+
+	g => '00;32', # green
+	G => '01;32', # green (BOLD)
+
+	y => '00;33', # yellow
+	Y => '01;33', # yellow (BOLD)
+
+	b => '00;34', # blue
+	B => '01;34', # blue (BOLD)
+
+	m => '00;35', # magenta
+	M => '01;35', # magenta (BOLD)
+	p => '00;35', # magenta
+	P => '01;35', # magenta (BOLD)
+
+	c => '00;36', # cyan
+	C => '01;36', # cyan (BOLD)
+
+	w => '00;37', # white
+	W => '01;37', # white (BOLD)
+);
+
+s/%([krgybmpcw])\[(.*?)\]/"\e[".$COLORS{$1}."m$2\e[00m"/ige;
