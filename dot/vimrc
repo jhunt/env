@@ -3,13 +3,23 @@
 "
 " These are my handy-dandy settings for Vim
 "
-" author:    James Hunt <jhunt@synacor.com>
+" author:    James Hunt <james@niftylogic.com>
 " created:   2008-06-27
 " updated:   2011-11-10, jrh: port to Synacor; Updated some F2/F3/F9 to be more useful
 "
 
 "################################################################################
 "#### GLOBAL PARAMETERS #########################################################
+
+" UTF-8 is awesome
+"set encoding=utf-8
+"set fileencodings=utf-8
+"setglobal fileencoding=utf-8
+
+let g:n7_rainbow=1
+
+" handle looooong lines in YAML files
+set maxmempattern=8192
 
 " Tabs are 4 columns wide, and use the TAB character
 set tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
@@ -63,6 +73,9 @@ set nocindent
 set laststatus=2
 set stl=[%n]\ file:%-50F\ %y%r%m\ byte:0x%B%=line:%l:%c/%L\ %p%%
 
+set nowildmenu
+set wildmode=longest,list
+
 
 
 "################################################################################
@@ -75,9 +88,11 @@ map <F7> :!/bin/sh -c 'clear && grep ^\"\"\" ~/.vimrc \| sed -e s/^...//'<CR>
 """ ###   File Creation / Update Header Helpers   ############################
 """
 """   F2 - insert header listing author and creation date.
-map <F2> o author:  James Hunt <jhunt@synacor.com><Esc>ocreated: <Esc>:read !date +"\%Y-\%m-\%d"<CR>kJ<Esc>
+map <F2> o author:  James Hunt <james@niftylogic.com><Esc>ocreated: <Esc>:read !date +"\%Y-\%m-\%d"<CR>kJ<Esc>
 """   F3 - insert a header line listing an update
 map <F3> oupdated: <Esc>:read !date +"\%Y-\%m-\%d"<CR>kJA, jrh: 
+"""   F4 - insert blank Pod at the end of the document
+map <F4> Go<CR>=head1 NAME<CR><CR>=head1 DESCRIPTION<CR><CR>=head1 METHODS<CR><CR>=head1 AUTHOR<CR><CR>Written by James Hunt <james@niftylogic.com><CR><CR>=cut<Esc>
 """   F9 - insert [ jrh, <date> ] at cursor
 map <F9> A[ jrh,<esc>:read !date +"\%Y-\%m-\%d"<CR>kJA ]<Esc>o
 
@@ -103,6 +118,13 @@ map ;cp :set nonumber<CR>:set nolist<CR>
 """   ;pc - Opposite of ;cp - turns on non-printing chars
 map ;pc :set number<CR>:set list<CR>
 
+"""   ;l6
+map ;lw a<C-R>=system("lipsum 1 1")<CR>
+map ;lt a<C-R>=system("lipsum 4 7")<CR>
+map ;lp a<C-R>=system("lipsum 20 40")<CR>
+map ;lP a<C-R>=system("lipsum 40 120")<CR>
+map ;ll a<C-R>=system("lipsum 4 16")<CR>
+
 """
 """
 """ ###   Whitespace Management   ############################################
@@ -122,14 +144,38 @@ map ;c :,s/^[ <Tab>]*//g<CR>i
 """   ;h - Write current file out in highlighted HTML
 map ;h :source $VIM/vimcurrent/syntax/2html.vim<CR>:w<CR>:close<CR>
 
+map ;t :!vimtest %<CR>
+map ;m :!upmake local <CR>
+map ;b :!upmake build <CR>
+map ;l :!perl -Ilib -c %<CR>
+
+command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
 
 "################################################################################
 "#### AUTOCOMMANDS ##############################################################
 
 " Wrap text in git commit message at 72 characters, as I type.
-au BufNewFile,BufRead .git/COMMIT_EDITMSG     set tw=72 wrap
+au BufNewFile,BufRead *.git/COMMIT_EDITMSG     set tw=72 wrap
 
+" Treat *.tt as HTML
+au BufNewFile,BufRead *.tt                    set ft=html
 
+" Treat *.tt as HTML
+au BufNewFile,BufRead *.jst                   set ft=atlas
+
+" Treat *.md as Markdown
+au BufNewFile,BufRead *.md                    set ft=markdown tw=66
+
+au BufNewFile,BufRead *.scm                   set ft=scheme et
+
+" Treat *.1 as man page source files
+au BufNewFile,BufRead *.1,*.2,*.3,*.4,*.5,*.6,*.7,*.8,*.9 set ft=nroff
+
+" Always set cursor position to 0,0 for git commit messages
+au FileType gitcommit call setpos('.', [0, 1, 1, 0])
+
+au BufNewFile *.t 0r ~/.vim/templates/test.t
+au BufNewFile *.t set ft=perl
 
 "################################################################################
 "#### HEX MODE ##################################################################
@@ -142,7 +188,7 @@ vnoremap <C-H> :<C-U>Hexmode<CR>
 command -bar Hexmode call ToggleHex()
 
 " helper function to toggle hex mode
-function ToggleHex()
+function! ToggleHex()
   " hex mode should be considered a read-only operation
   " save values for modified and read-only for restoration later,
   " and clear the read-only flag for now
@@ -178,3 +224,12 @@ function ToggleHex()
   let &readonly=l:oldreadonly
   let &modifiable=l:oldmodifiable
 endfunction
+
+function! CursorPing()
+	set cursorline cursorcolumn
+	redraw
+	sleep 1250m
+	set nocursorline nocursorcolumn
+endfunction
+
+map <C-L> :call CursorPing()<CR>

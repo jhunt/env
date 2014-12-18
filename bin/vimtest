@@ -1,0 +1,13 @@
+#!/usr/bin/perl
+
+if ($ARGV[0] =~ m/.*\.t$/) {
+	print `prove --merge -lv $ARGV[0]`;
+	exit $?;
+}
+
+if ($ARGV[0] =~ m{(.*)\.c$}) {
+	print `(make $1 && ./$1) 2>&1`;
+	exit $?;
+}
+
+die "I don't know how to test '$ARGV[0]'!\n";
