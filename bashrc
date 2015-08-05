@@ -29,8 +29,14 @@ alias s='_ssh_auth_save; export HOSTNAME=$(hostname); s'
 
 # Bash Prompts ########################################
 
-PROMPT_HOST=$(hostname -f | sed -e 's/\.niftylogic\.net//')
-PROMPT_ADDR=$(/sbin/ip addr show 2>/dev/null | awk '/inet.*(eth|bond|wlan)/ { print $2; exit }')
+PROMPT_HOST=$(hostname -f | sed -e 's/\.niftylogic\.net$//')
+if [[ -x /sbin/ip ]]; then
+	PROMPT_ADDR=$(/sbin/ip addr show 2>/dev/null | awk '/inet.*(eth|bond|wlan)/ { print $2; exit }')
+elif [[ -x /sbin/ifconfig ]]; then
+	PROMPT_ADDR=$(/sbin/ifconfig en0 2>/dev/null | awk '/inet / { print $2; exit }')
+else
+	PROMPT_ADDR="::unknown::"
+fi
 [ -z $PROMPT_ADDR ] || PROMPT_ADDR="$PROMPT_ADDR "
 
 export PS1=$(echo "+%B[\t]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'" %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
