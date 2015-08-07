@@ -10,4 +10,9 @@ if ($ARGV[0] =~ m{(.*)\.c$}) {
 	exit $?;
 }
 
+if ($ARGV[0] =~ m{\.go$}) {
+	print `(go run $ARGV[0]) 2>&1`;
+	exit $?;
+}
+
 die "I don't know how to test '$ARGV[0]'!\n";
