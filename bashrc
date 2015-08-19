@@ -39,7 +39,12 @@ else
 fi
 [ -z $PROMPT_ADDR ] || PROMPT_ADDR="$PROMPT_ADDR "
 
-export PS1=$(echo "+%B[\t]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'" %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
+PROMPT_TT=""
+if [[ -x $HOME/bin/tt ]]; then
+	PROMPT_TT='%C[$(tt --prompt):]'
+fi
+
+export PS1=$(echo "+%B[\t]:%Y[\!]:$PROMPT_TT"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'" %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
 
 type git >/dev/null 2>&1
 if [[ $? == 0 ]]; then
