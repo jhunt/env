@@ -32,6 +32,9 @@ set novisualbell
 filetype indent on
 set autoindent
 
+" Allow backspace / delete in insert mode
+set backspace=start,eol,indent
+
 " Add 'o' formatoption to continue comment characters during F2/F3
 set formatoptions=tcqo
 
@@ -149,6 +152,8 @@ map ;m :!upmake local <CR>
 map ;b :!upmake build <CR>
 map ;l :!perl -Ilib -c %<CR>
 
+map ;= :let _s=@/<Bar>,/^$/-1!column -t<CR>:let @/=_s<CR>
+
 command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
 
 "################################################################################
@@ -171,6 +176,10 @@ au BufNewFile,BufRead *.scm                   set ft=scheme et
 " Treat *.1 as man page source files
 au BufNewFile,BufRead *.1,*.2,*.3,*.4,*.5,*.6,*.7,*.8,*.9 set ft=nroff
 
+" Treat *.ya?ml as YAML
+au BufNewFile,BufRead *.yml                    set ft=yaml et ts=2 sts=2 sw=2
+au BufNewFile,BufRead *.yaml                   set ft=yaml et ts=2 sts=2 sw=2
+
 " Always set cursor position to 0,0 for git commit messages
 au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 
@@ -185,7 +194,7 @@ inoremap <C-H> <Esc>:Hexmode<CR>
 vnoremap <C-H> :<C-U>Hexmode<CR>
 
 " ex command for toggling hex mode - define mapping if desired
-command -bar Hexmode call ToggleHex()
+command! -bar Hexmode call ToggleHex()
 
 " helper function to toggle hex mode
 function! ToggleHex()
