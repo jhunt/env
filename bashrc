@@ -24,8 +24,8 @@ _ssh_auth_save() {
 	ln -sf "$SSH_AUTH_SOCK" "$HOME/.screen/ssh-auth-sock.$HOSTNAME"
 	echo "auth sock: $SSH_AUTH_SOCK"
 }
-alias screen='_ssh_auth_save; export HOSTNAME=$(hostname); screen'
-alias s='_ssh_auth_save; export HOSTNAME=$(hostname); s'
+#alias screen='_ssh_auth_save; export HOSTNAME=$(hostname); screen'
+#alias s='_ssh_auth_save; export HOSTNAME=$(hostname); s'
 
 # Bash Prompts ########################################
 
