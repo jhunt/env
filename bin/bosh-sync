@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+dest=${1:?Usage: $0 /path/to/save/to}
+
+for deployment in $(bosh-curl /deployments | jq -r .[].name); do
+	bosh download manifest ${deployment} ${dest}/${deployment}.yml
+done
