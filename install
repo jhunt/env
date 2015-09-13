@@ -1,4 +1,10 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
+
+if [[ "$(command -v apt-get)" != "" ]]; then
+	sudo apt-get install libtime-hires-perl -y
+fi
 
 (
 cd ~/env/dot
