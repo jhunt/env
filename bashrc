@@ -21,7 +21,7 @@ alias vgmem='valgrind --leak-check=full --show-reachable=yes'
 
 PROMPT_HOST=$(hostname -f | sed -e 's/\.niftylogic\.net$//')
 if [[ -x /sbin/ip ]]; then
-	PROMPT_ADDR=$(/sbin/ip addr show 2>/dev/null | awk '/inet.*(eth|bond|wlan)/ { print $2; exit }')
+	PROMPT_ADDR=$(/sbin/ip addr show 2>/dev/null | awk '/inet.* scope global / { print $2; exit }')
 elif [[ -x /sbin/ifconfig ]]; then
 	PROMPT_ADDR=$(/sbin/ifconfig en0 2>/dev/null | awk '/inet / { print $2; exit }')
 else
