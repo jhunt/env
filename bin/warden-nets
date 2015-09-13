@@ -29,7 +29,7 @@ pod2usage('--network must specify an octet as "x"')
 pod2usage('--count is too high (must be <= 64)')
 	if $OPTIONS{count} > 64;
 pod2usage('--count is too low (must be > 0)')
-	if $OPTIONS{Pcount} < 1;
+	if $OPTIONS{count} < 1;
 
 print <<EOF;
 networks:
