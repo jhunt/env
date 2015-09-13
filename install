@@ -2,9 +2,15 @@
 
 set -e
 
-if [[ "$(command -v apt-get)" != "" ]]; then
-	sudo apt-get install libtime-hires-perl -y
-fi
+DIST=$(lsb_release -si)
+case ${DIST} in
+(Ubuntu)
+	sudo apt-get update
+	sudo apt-get install -y \
+		libtime-hires-perl \
+		vim
+	;;
+esac
 
 (
 cd ~/env/dot
