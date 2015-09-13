@@ -17,16 +17,6 @@ else
 fi
 alias vgmem='valgrind --leak-check=full --show-reachable=yes'
 
-# Screen SSH_AUTH_SOCK Support #######################
-
-_ssh_auth_save() {
-	mkdir -p $HOME/.screen
-	ln -sf "$SSH_AUTH_SOCK" "$HOME/.screen/ssh-auth-sock.$HOSTNAME"
-	echo "auth sock: $SSH_AUTH_SOCK"
-}
-#alias screen='_ssh_auth_save; export HOSTNAME=$(hostname); screen'
-#alias s='_ssh_auth_save; export HOSTNAME=$(hostname); s'
-
 # Bash Prompts ########################################
 
 PROMPT_HOST=$(hostname -f | sed -e 's/\.niftylogic\.net$//')
