@@ -21,6 +21,7 @@ GetOptions(\%OPTIONS, qw/
 	static|s=i
 	expanded|e
 /) or pod2usage(2);
+my $cmd = "warden-nets -N $OPTIONS{name} -n $OPTIONS{network} -c $OPTIONS{count}";
 pod2usage(1) if $OPTIONS{help};
 pod2usage('Bad --network value')
 	unless $OPTIONS{network} =~ m/^[.0-9x]+$/;
@@ -35,11 +36,16 @@ pod2usage('--count is too low (must be > 0)')
 
 if ($OPTIONS{static} < 0) {
 	$OPTIONS{static} = int($OPTIONS{count} * 0.5);
+} else {
+	$cmd .= " --static $OPTIONS{static}";
 }
 pod2usage('--static cannot be greater than --count')
 	if $OPTIONS{static} > $OPTIONS{count};
 
+$cmd .= " --expanded" if $OPTIONS{expanded};
+
 print <<EOF;
+# $cmd
 networks:
   - name: $OPTIONS{name}
     type: manual
