@@ -2,14 +2,19 @@
 
 set -e
 
-DIST=$(lsb_release -si)
-case ${DIST} in
-(Ubuntu)
-	sudo apt-get update
-	sudo apt-get install -y \
-		libtime-hires-perl \
-		vim
+case $OSTYPE in
+(darwin*)
 	;;
+(linux*)
+	DIST=$(lsb_release -si)
+	case ${DIST} in
+	(Ubuntu)
+		sudo apt-get update
+		sudo apt-get install -y \
+			libtime-hires-perl \
+			vim
+		;;
+	esac
 esac
 
 (
