@@ -24,9 +24,7 @@ for FILE in *; do
 done
 )
 
-if [[ ! -d ~/bin ]]; then
-	mkdir ~/bin
-fi
+mkdir -p ~/bin ~/sw
 cp ~/env/bin/* ~/bin
 
 ~/env/git-config

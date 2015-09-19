@@ -59,6 +59,15 @@ if [[ "$(command -v brew)" != "" ]]; then
 	export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
 fi
 
+if [[ -d $HOME/sw ]]; then
+	export PATH="$PATH:$HOME/sw/bin"
+	export LD_LIBRARY_PATH="$HOME/sw"
+	export LDFLAGS="-L$HOME/sw/lib"
+	export CFLAGS="-I$HOME/sw/include"
+	export CPPFLAGS=$CFLAGS
+	export PKG_CONFIG_PATH="$HOME/sw/lib/pkgconfig"
+fi
+
 for FILE in $HOME/env/*.bashrc; do
 	[ -f $FILE ] && source $FILE
 done
