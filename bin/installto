@@ -1,0 +1,66 @@
+#!/bin/bash
+
+setup_environment() {
+	local target=$1
+	local add=""
+
+	add="-L${target}/lib"
+	if [[ -z ${LDFLAGS} ]]; then
+		LDFLAGS=${add}
+	else
+		LDFLAGS="${LDFLAGS} ${add}"
+	fi
+
+	add="-I${target}/include"
+	if [[ -z ${CFLAGS} ]]; then
+		CFLAGS=${add}
+	else
+		CFLAGS="${CFLAGS} ${add}"
+	fi
+	if [[ -z ${CPPFLAGS} ]]; then
+		CPPFLAGS=${add}
+	else
+		CPPFLAGS="${CPPFLAGS} ${add}"
+	fi
+
+	add="${target}/lib"
+	if [[ -z ${LD_LIBRARY_PATH} ]]; then
+		LD_LIBRARY_PATH=${add}
+	else
+		LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${add}"
+	fi
+
+	add="${target}/bin"
+	if [[ -z ${PATH} ]]; then
+		PATH=${add}
+	else
+		PATH="${PATH}:${add}"
+	fi
+
+	add="${target}/lib/pkgconfig"
+	if [[ -z ${PKG_CONFIG_PATH} ]]; then
+		PKG_CONFIG_PATH=${add}
+	else
+		PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${add}"
+	fi
+}
+
+main() {
+	local target=${1:?USAGE: installto <PATH> [options-for-./configure]}
+	shift
+
+	setup_environment ${target}
+
+	set -e
+	if [[ -x boostrap ]]; then
+		./bootstrap
+	elif [[ -x autogen.sh ]]; then
+		./autogen.sh
+	fi
+
+	./configure $* --prefix ${target}
+	make
+	make install
+}
+
+main $@
