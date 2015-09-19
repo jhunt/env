@@ -17,6 +17,10 @@ else
 fi
 alias vgmem='valgrind --leak-check=full --show-reachable=yes'
 
+# Configure Environment ###############################
+# V=0 causes quiet output from automake builds
+export V=0
+
 # Bash Prompts ########################################
 
 PROMPT_HOST=$(hostname -f | sed -e 's/\.niftylogic\.net$//')
