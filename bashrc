@@ -61,7 +61,7 @@ fi
 
 if [[ -d $HOME/sw ]]; then
 	export PATH="$PATH:$HOME/sw/bin"
-	export LD_LIBRARY_PATH="$HOME/sw"
+	export LD_LIBRARY_PATH="$HOME/sw/lib"
 	export LDFLAGS="-L$HOME/sw/lib"
 	export CFLAGS="-I$HOME/sw/include"
 	export CPPFLAGS=$CFLAGS
