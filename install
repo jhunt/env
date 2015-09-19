@@ -4,19 +4,27 @@ set -e
 
 case $OSTYPE in
 (darwin*)
+	echo "running on a mac..."
 	;;
 (linux*)
+	echo "running on a linux..."
 	DIST=$(lsb_release -si)
 	case ${DIST} in
 	(Ubuntu)
-		sudo apt-get update
-		sudo apt-get install -y \
+		echo "ensuring required system packages are present..."
+		sudo apt-get update >/dev/null
+		sudo apt-get install -y >/dev/null \
 			libtime-hires-perl \
 			vim
 		;;
 	esac
+	;;
+(*)
+	echo "*** UNRECOGNIZED SYSTEM (OSTYPE) FOUND: ${OSTYPE} ***"
+	;;
 esac
 
+echo "setting up dot files in ~"
 (
 cd ~/env/dot
 for FILE in *; do
@@ -24,17 +32,17 @@ for FILE in *; do
 done
 )
 
+echo "copying in ~/bin scripts..."
 mkdir -p ~/bin ~/sw
 cp ~/env/bin/* ~/bin
 
+echo "configuring git..."
 ~/env/git-config
 
-if [[ ! -f ~/.bashrc ]]; then
-	touch ~/.bashrc
-fi
+echo "setting up ~/.bashrc..."
+touch ~/.bashrc
 grep -q "source $HOME/env/bashrc" ~/.bashrc || echo "source $HOME/env/bashrc" >> ~/.bashrc
 source ~/.bashrc
-
 if [[ ! -f ~/.bash_profile ]]; then
 	echo ". ~/.bashrc" > ~/.bash_profile
 fi
