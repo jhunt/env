@@ -55,6 +55,9 @@ echo $PATH | grep -q "$HOME/bin";
 if [[ $? != 0 ]]; then
 	export PATH="$PATH:$HOME/bin"
 fi
+if [[ "$(command -v brew)" != "" ]]; then
+	export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
+fi
 
 for FILE in $HOME/env/*.bashrc; do
 	[ -f $FILE ] && source $FILE
