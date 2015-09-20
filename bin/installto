@@ -52,10 +52,12 @@ main() {
 	setup_environment ${target}
 
 	set -e
-	if [[ -x boostrap ]]; then
-		./bootstrap
-	elif [[ -x autogen.sh ]]; then
-		./autogen.sh
+	if [[ ! -x configure ]]; then
+		if [[ -x bootstrap ]]; then
+			./bootstrap
+		elif [[ -x autogen.sh ]]; then
+			./autogen.sh
+		fi
 	fi
 
 	./configure $* --prefix ${target}
