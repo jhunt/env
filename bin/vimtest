@@ -15,4 +15,9 @@ if ($ARGV[0] =~ m{\.go$}) {
 	exit $?;
 }
 
+if (-x $ARGV[0]) {
+	print `./$ARGV[0] 2>&1`;
+	exit $?
+}
+
 die "I don't know how to test '$ARGV[0]'!\n";
