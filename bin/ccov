@@ -16,17 +16,18 @@ if [[ -z $1 || "$1" == "help" || "$1" == "-h" || "$1" == "-?" ]]; then
 	exit 0
 fi
 
+CCOV_CFLAGS="-g -O0 -ftestcoverage -fprofile-arcs"
 while (( $# > 0 )); do
 	case $1 in
 	(build)
 		make clean;
-		make CFLAGS="$CFLAGS -g -O0 -ftest-coverage -fprofile-arcs" check
+		make CFLAGS="$CFLAGS $CCOV_CFLAGS" check
 		lcov --compat-libtool --directory . --base-directory . --capture --output-file coverage/app.info
 		genhtml -o coverage/ coverage/app.info
 		exit 0
 		;;
 	(cflags|flags)
-		echo "-g -O0 -ftest-coverage -fprofile-arcs"
+		echo $CCOV_CFLAGS
 		exit 0
 		;;
 	(clean)
@@ -34,8 +35,11 @@ while (( $# > 0 )); do
 		find . -name '*.gcda' -exec rm {} \;
 		lcov --directory . --zerocounters
 		;;
+	(make)
+		make CFLAGS="$CFLAGS $CCOV_CFLAGS"
+		;;
 	(check|test)
-		make check
+		make CFLAGS="$CFLAGS $CCOV_CFLAGS" check
 		;;
 	(report)
 		lcov --compat-libtool --directory . --base-directory . --capture --output-file coverage/app.info
