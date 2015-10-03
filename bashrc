@@ -81,3 +81,8 @@ done
 if [ -f ~/.bashrc.local ]; then
 	. ~/.bashrc.local
 fi
+
+eval $(dircolors)
+if ! ls --color=auto /enoent 2>&1 >/dev/null | grep -q illegal; then
+	alias ls="ls --color=auto"
+fi
