@@ -1,7 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
-git config --global user.name  "James Hunt"
-git config --global user.email james@niftylogic.com
+if egrep -q '^jr?hunt$' <<<$USER || ${IAMJAMESHUNT}; then
+  git config --global user.name  "James Hunt"
+  git config --global user.email james@niftylogic.com
+fi
 
 git config --global alias.st "status"
 git config --global alias.ci "commit"
