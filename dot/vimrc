@@ -16,6 +16,15 @@
 "set fileencodings=utf-8
 "setglobal fileencoding=utf-8
 
+" viminfo - remember all the things!
+"   '10   remember marks for last 10 files
+"   "100       ... last 100 lines (per register)
+"   :20        ... last 20 commands
+"   %          ... list of buffers
+"   n     Where to save viminfo data
+"
+set viminfo='10,\"100,:20,%,n~/.viminfo
+
 let g:n7_rainbow=1
 
 " handle looooong lines in YAML files
@@ -159,32 +168,40 @@ command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=h
 "################################################################################
 "#### AUTOCOMMANDS ##############################################################
 
-" Wrap text in git commit message at 72 characters, as I type.
-au BufNewFile,BufRead *.git/COMMIT_EDITMSG     set tw=72 wrap
+if has("autocmd")
+  " Jump to last cursor position, per ~/.viminfo
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
-" Treat *.tt as HTML
-au BufNewFile,BufRead *.tt                    set ft=html
+  " Wrap text in git commit message at 72 characters, as I type.
+  au BufNewFile,BufRead *.git/COMMIT_EDITMSG    set tw=72 wrap
 
-" Treat *.tt as HTML
-au BufNewFile,BufRead *.jst                   set ft=atlas
+  " Treat *.tt as HTML
+  au BufNewFile,BufRead *.tt                    set ft=html
 
-" Treat *.md as Markdown
-au BufNewFile,BufRead *.md                    set ft=markdown tw=66
+  " Treat *.tt as HTML
+  au BufNewFile,BufRead *.jst                   set ft=atlas
 
-au BufNewFile,BufRead *.scm                   set ft=scheme et
+  " Treat *.md as Markdown
+  au BufNewFile,BufRead *.md                    set ft=markdown tw=66
 
-" Treat *.1 as man page source files
-au BufNewFile,BufRead *.1,*.2,*.3,*.4,*.5,*.6,*.7,*.8,*.9 set ft=nroff
+  au BufNewFile,BufRead *.scm                   set ft=scheme et
 
-" Treat *.ya?ml as YAML
-au BufNewFile,BufRead *.yml                    set ft=yaml et ts=2 sts=2 sw=2
-au BufNewFile,BufRead *.yaml                   set ft=yaml et ts=2 sts=2 sw=2
+  " Treat *.1 as man page source files
+  au BufNewFile,BufRead *.1,*.2,*.3,*.4,*.5,*.6,*.7,*.8,*.9 set ft=nroff
 
-" Always set cursor position to 0,0 for git commit messages
-au FileType gitcommit call setpos('.', [0, 1, 1, 0])
+  " Treat *.ya?ml as YAML
+  au BufNewFile,BufRead *.yml                   set ft=yaml et ts=2 sts=2 sw=2
+  au BufNewFile,BufRead *.yaml                  set ft=yaml et ts=2 sts=2 sw=2
 
-au BufNewFile *.t 0r ~/.vim/templates/test.t
-au BufNewFile *.t set ft=perl
+  " Rubyists practice the heresy of spaces-over-tabs
+  au BufNewFile,BufRead *.rb                    set et ts=2 sts=2 sw=2
+
+  " Always set cursor position to 0,0 for git commit messages
+  au FileType gitcommit call setpos('.', [0, 1, 1, 0])
+
+  au BufNewFile *.t 0r ~/.vim/templates/test.t
+  au BufNewFile *.t set ft=perl
+endif
 
 "################################################################################
 "#### HEX MODE ##################################################################
