@@ -1,0 +1,23 @@
+#!/bin/bash
+
+KEYROOT=$(mktemp -d $PWD/meow.XXXXXXX)
+trap "rm -rf ${KEYROOT}" EXIT TERM INT
+
+pushd ${KEYROOT} >/dev/null
+ssh-keygen -t rsa -f key -N '' -C '' >/dev/null 2>&1
+
+
+echo "pipeline-private-key:"
+cat key | sed -e 's/^/  /'
+echo
+echo
+
+echo "Public (for Github):"
+cat key.pub
+echo
+echo
+
+echo "Fingerprint:"
+ssh-keygen -lf key.pub
+
+popd >/dev/null
