@@ -65,9 +65,10 @@ for (my $i = 0; $i < $OPTIONS{count}; $i++) {
       - range:     $range/30
         reserved: [$reserved]
         static:   [$static]
+        cloud_properties: { is: unused }
 EOF
 	} else {
-		printf "      - { range: %s, reserved: [%s], static: [%s] }\n", "$range/30", $reserved, $static;
+		printf "      - { cloud_properties: { is: unused }, range: %s, reserved: [%s], static: [%s] }\n", "$range/30", $reserved, $static;
 	}
 }
 
