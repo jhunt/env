@@ -60,7 +60,7 @@ if [[ $? != 0 ]]; then
 	export PATH="$PATH:$HOME/bin"
 fi
 if [[ "$(command -v brew)" != "" ]]; then
-	export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
+	export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/sbin:/usr/local/bin:$PATH"
 fi
 
 if [[ -d $HOME/sw ]]; then
