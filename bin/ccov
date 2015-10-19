@@ -6,6 +6,7 @@ usage() {
 	echo >&2 "  build    Run the full build pipeline (runs \`make clean')"
 	echo >&2 "  cflags   Print out important (GCC) CFLAGS"
 	echo >&2 "  clean    Reset coverage profiling statistics"
+	echo >&2 "  make     Compile software (via \`make') with \$CFLAGS set"
 	echo >&2 "  check    Runs the tests (via \`make check')"
 	echo >&2 "  report   Generates an HTML coverage report in coverage/"
 	echo >&2
@@ -16,7 +17,7 @@ if [[ -z $1 || "$1" == "help" || "$1" == "-h" || "$1" == "-?" ]]; then
 	exit 0
 fi
 
-CCOV_CFLAGS="-g -O0 -ftestcoverage -fprofile-arcs"
+CCOV_CFLAGS="-g -O0 -ftest-coverage -fprofile-arcs"
 while (( $# > 0 )); do
 	case $1 in
 	(build)
