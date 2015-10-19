@@ -1,0 +1,8 @@
+#!/bin/bash
+
+TITLE="$*"
+if [ -z "${TITLE}" ]; then
+	echo >&2 "USAGE: $0 title string"
+	exit 1
+fi
+echo -ne "\e]1;${TITLE}\a"
