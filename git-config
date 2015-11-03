@@ -44,3 +44,5 @@ git config --global color.diff.whitespace "blue reverse"
 git config --global color.status.added "green bold"
 git config --global color.status.changed "red bold"
 git config --global color.status.untracked "cyan bold"
+
+git config --global core.excludesFile "~/.gitignore"
