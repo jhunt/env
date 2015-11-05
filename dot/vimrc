@@ -108,6 +108,8 @@ map <F4> Go<CR>=head1 NAME<CR><CR>=head1 DESCRIPTION<CR><CR>=head1 METHODS<CR><C
 """   F9 - insert [ jrh, <date> ] at cursor
 map <F9> A[ jrh,<esc>:read !date +"\%Y-\%m-\%d"<CR>kJA ]<Esc>o
 
+inoremap <F6> <Esc>:let @a=system("uuidgen <Bar> tr A-Z a-z")<CR>a<C-R>a<Esc>kJxa
+
 """
 """
 """ ###   Easy .vimrc Management   ###########################################
