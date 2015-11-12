@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if egrep -q '^jr?hunt$' <<<$USER || test -n ${IAMJAMESHUNT}; then
+if [[ -n ${IAMJAMESHUNT} || "${USER}" == "jhunt" || "${USER}" == "jrhunt" ]]; then
   git config --global user.name  "James Hunt"
   git config --global user.email james@niftylogic.com
 fi
