@@ -1,0 +1,13 @@
+#!/bin/bash
+
+CERTS=$(mktemp -d selfc.XXXXXXX)
+trap "rm -rf $CERTS" EXIT TERM INT
+
+openssl req \
+  -newkey rsa:4096 -nodes -sha256 -keyout $CERTS/key.pem \
+  -x509 -days 365 -out $CERTS/cert.pem
+
+cat $CERTS/key.pem
+echo
+cat $CERTS/cert.pem
+echo
