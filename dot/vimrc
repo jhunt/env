@@ -25,7 +25,9 @@
 "
 set viminfo='10,\"100,:20,%,n~/.viminfo
 
-execute pathogen#infect()
+if exists("pathogen#infect")
+	execute pathogen#infect()
+endif
 
 let g:n7_rainbow=1
 
