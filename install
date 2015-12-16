@@ -40,6 +40,36 @@ echo "copying in ~/bin scripts..."
 mkdir -p ~/bin ~/sw
 cp ~/env/bin/* ~/bin
 
+if [[ ! -f ~/bin/jq ]]; then
+	echo "  installing jq..."
+	case $OSTYPE in
+	(darwin*)
+		curl -Ls https://github.com/stedolan/jq/releases/download/jq-1.5/jq-osx-amd64 > ~/bin/jq
+		chmod 0755 ~/bin/jq
+		;;
+	(linux*)
+		curl -Ls https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 > ~/bin/jq
+		chmod 0755 ~/bin/jq
+		;;
+	esac
+fi
+if [[ ! -f ~/bin/spruce ]]; then
+	version=0.13.0
+	echo "  installing spruce (v${version})..."
+	case $OSTYPE in
+	(darwin*)
+		curl -Ls https://github.com/geofffranks/spruce/releases/download/v${version}/spruce_${version}_darwin_amd64.zip > spruce.zip
+		unzip -p spruce.zip spruce_${version}_darwin_amd64/spruce > ~/bin/spruce
+		chmod 0755 ~/bin/spruce
+		rm spruce.zip
+		;;
+	(linux*)
+		curl -Ls https://github.com/geofffranks/spruce/releases/download/v${version}/spruce_${version}_linux_amd64.tar.gz | \
+			tar -xz --strip-components 1 -C ~/bin/ spruce_${version}_linux_amd64/spruce
+		;;
+	esac
+fi
+
 echo "configuring git..."
 ~/env/git-config
 
