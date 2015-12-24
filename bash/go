@@ -26,3 +26,5 @@ go() {
 		return $?
 	fi
 }
+
+# vim:ft=bash

@@ -13,3 +13,5 @@ if [[ -d "${HOME}/perl5/lib/perl5" ]]; then
 
 	export PERL5LIB
 fi
+
+# vim:ft=bash
