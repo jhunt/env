@@ -1,0 +1,28 @@
+# bashrc for Go hacking
+
+#
+# Wrap the main go command to support injected sub-commands
+#
+#  go be work/space        Set up GOPATH and PATH env vars to
+#                          use a work/space as the workspace.
+#
+#  go *                    Hand off to the main go binary
+#
+go() {
+	if [[ $1 == "be" ]]; then
+		candidate="$2"
+		if [[ ! $candidate =~ "^/" ]]; then
+			candidate="${HOME}/code/go/${candidate}"
+		fi
+		if [[ ! -d ${candidate} ]]; then
+			echo >&2 "${candidate}: No such file or directory"
+			return 1
+		fi
+
+		export GOPATH=${candidate}
+		export PATH=${PATH}:${GOPATH}/bin
+	else
+		eval command go "$@"
+		return $?
+	fi
+}
