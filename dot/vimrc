@@ -32,7 +32,9 @@ endif
 let g:n7_rainbow=1
 
 " case matters
-set nofileignorecase
+if exists("+nocompatible")
+	set nofileignorecase
+endif
 
 " handle looooong lines in YAML files
 set maxmempattern=8192
