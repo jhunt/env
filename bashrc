@@ -80,7 +80,7 @@ if [[ -d $HOME/sw ]]; then
 	export PKG_CONFIG_PATH="$HOME/sw/lib/pkgconfig"
 fi
 
-for FILE in $HOME/env/*.bashrc; do
+for FILE in $HOME/env/bash/*; do
 	[ -f $FILE ] && source $FILE
 done
 
