@@ -6,6 +6,9 @@
 # VIM #################################################
 export EDITOR=vim
 
+# COLORS ##############################################
+export CLICOLOR=1 # Mac OSX
+
 # Command Aliases #####################################
 alias ll='ls -l'
 alias la='ls -la'
