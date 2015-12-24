@@ -183,7 +183,7 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
   " Wrap text in git commit message at 72 characters, as I type.
-  au BufNewFile,BufRead *.git/COMMIT_EDITMSG    set tw=72 wrap
+  au BufNewFile,BufRead *.git/COMMIT_EDITMSG    set tw=72 wrap | call setpos('.', [0, 1, 1, 0])
 
   " Treat *.tt as HTML
   au BufNewFile,BufRead *.tt                    set ft=html
