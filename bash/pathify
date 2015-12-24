@@ -91,7 +91,7 @@ pathify() {
 			fi
 		done
 	done <<< "$path"
-	PATH=$(IFS=: ; echo "${head[*]}")
+	export PATH=$(IFS=: ; echo "${head[*]}")
 }
 
 # vim:ft=bash

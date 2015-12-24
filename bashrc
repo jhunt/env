@@ -65,14 +65,14 @@ esac
 
 echo $PATH | grep -q "$HOME/bin";
 if [[ $? != 0 ]]; then
-	export PATH="$PATH:$HOME/bin"
+	PATH="$PATH:$HOME/bin"
 fi
 if [[ "$(command -v brew)" != "" ]]; then
-	export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/sbin:/usr/local/bin:$PATH"
+	PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/sbin:/usr/local/bin:$PATH"
 fi
 
 if [[ -d $HOME/sw ]]; then
-	export PATH="$PATH:$HOME/sw/sbin:$HOME/sw/bin"
+	PATH="$PATH:$HOME/sw/sbin:$HOME/sw/bin"
 	export LD_LIBRARY_PATH="$HOME/sw/lib"
 	export LDFLAGS="-L$HOME/sw/lib"
 	export CFLAGS="-I$HOME/sw/include"
@@ -94,3 +94,5 @@ eval $(dircolors)
 if ! ls --color=auto /enoent 2>&1 >/dev/null | grep -q illegal; then
 	alias ls="ls --color=auto"
 fi
+
+pathify

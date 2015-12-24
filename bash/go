@@ -19,12 +19,20 @@ go() {
 			return 1
 		fi
 
+		[[ -n ${GOPATH} ]] && pathify -r ${GOPATH}/bin -a ${candidate}/bin
 		export GOPATH=${candidate}
-		export PATH=${PATH}:${GOPATH}/bin
 	else
 		eval command go "$@"
 		return $?
 	fi
 }
+
+# Go Programming ######################################
+if [[ -d ~/go ]]; then
+	export GOPATH=$HOME/go
+fi
+if [[ ! -z $GOPATH ]]; then
+	export PATH="$PATH:$GOPATH/bin"
+fi
 
 # vim:ft=bash
