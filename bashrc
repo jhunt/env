@@ -42,8 +42,11 @@ if [[ -x $HOME/bin/tt ]]; then
 fi
 
 PROMPT_SHLVL=""
-if [[ $SHLVL != 1 ]]; then
+if [[ -z $TMUX && $SHLVL != 1 ]]; then
 	PROMPT_SHLVL="%C[sh${SHLVL}] "
+fi
+if [[ -n $TMUX && $SHLVL != 2 ]]; then
+	PROMPT_SHLVL="%C[sh$(( SHLVL - 1 ))] "
 fi
 
 export PS1=$(echo "$PROMPT_SHLVL+%B[\t]:%Y[\!]:$PROMPT_TT"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'" %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
