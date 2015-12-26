@@ -10,6 +10,11 @@
 #
 go() {
 	if [[ $1 == "be" ]]; then
+		if [[ -z "$2" ]]; then
+			echo "GOPATH=${GOPATH}"
+			return 0
+		fi
+
 		candidate="$2"
 		if [[ ! $candidate =~ "^/" ]]; then
 			candidate="${HOME}/code/go/${candidate}"
