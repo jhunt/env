@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [[ -z "${1}" ]]; then
+	echo >&2 "USAGE: waitssh host-or-ip [options]"
+	exit 1
+fi
+
+ping -o $1 && ssh "$@"
