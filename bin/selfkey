@@ -1,0 +1,10 @@
+#!/bin/bash
+
+KEYS=$(mktemp -d selfk.XXXXXXX)
+trap "rm -rf $KEYS" EXIT TERM INT
+
+ssh-keygen -t rsa -f $KEYS/sshkey -N '' >/dev/null
+cat $KEYS/sshkey
+echo
+cat $KEYS/sshkey.pub
+echo
