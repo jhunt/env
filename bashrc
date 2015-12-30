@@ -49,7 +49,12 @@ if [[ -n $TMUX && $SHLVL != 2 ]]; then
 	PROMPT_SHLVL="%C[sh$(( SHLVL - 1 ))] "
 fi
 
-export PS1=$(echo "$PROMPT_SHLVL+%B[\t]:%Y[\!]:$PROMPT_TT"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'" %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
+PROMPT_GO=""
+if [[ -n ${GOENV} ]]; then
+	PROMPT_GO="%K[${GOENV}]|"
+fi
+
+export PS1=$(echo "$PROMPT_SHLVL+$PROMPT_GO%B[\t]:%Y[\!]:$PROMPT_TT"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'" %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
 
 type git >/dev/null 2>&1
 if [[ $? == 0 ]]; then

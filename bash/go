@@ -16,6 +16,7 @@ go() {
 		fi
 
 		candidate="$2"
+		export GOENV="${candidate}"
 		if [[ ! $candidate =~ "^/" ]]; then
 			candidate="${HOME}/code/go/${candidate}"
 		fi
@@ -27,6 +28,15 @@ go() {
 		[[ -n ${GOPATH} ]] && pathify -r ${GOPATH}/bin -a ${candidate}/bin
 		export GOPATH=${candidate}
 		echo "GOPATH=${GOPATH}"
+		cd ${GOPATH}
+	elif [[ $1 == "setup" ]]; then
+		command go get github.com/tools/godep && \
+		command go get github.com/golang/lint/golint && \
+		command go get github.com/onsi/ginkgo && \
+		command go get github.com/onsi/ginkgo/ginkgo && \
+		command go get github.com/onsi/gomega && \
+		true
+		return $?
 	else
 		eval command go "$@"
 		return $?
@@ -34,10 +44,8 @@ go() {
 }
 
 # Go Programming ######################################
-if [[ -d ~/go ]]; then
+if [[ -z $GOPATH && -d ~/go ]]; then
 	export GOPATH=$HOME/go
-fi
-if [[ ! -z $GOPATH ]]; then
 	export PATH="$PATH:$GOPATH/bin"
 fi
 
