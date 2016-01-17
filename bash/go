@@ -38,7 +38,7 @@ go() {
 		true
 		return $?
 	else
-		eval command go "$@"
+		command go "$@"
 		return $?
 	fi
 }
