@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#
+# vaultme - A utility for auto-generating Vault'ed passwords
+# USAGE: vaultme secret/path/to/write username=admin password=
+#
+# author:  James Hunt <james@niftylogic.com>
+# created: 2016-01-21
+#
+
+need_command() {
+	local cmd=${1:?need_command() - no command name given}
+
+	if [[ ! -x "$(command -v $cmd)" ]]; then
+		echo >&2 "${cmd} is not installed."
+		exit 2
+	fi
+}
+
+need_command pwgen
+need_command vault
+
+if [[ -z ${VAULT_ADDR} ]]; then
+	echo >&2 "No \$VAULT_ADDR is set; are you targetting a Vault?"
+	exit 1
+fi
+
+path=$1 ; shift
+if [[ -z ${path} || $# == 0 ]]; then
+	echo >&2 "USAGE: $0 secret/path/to/write username=admin password= [key=value ...]"
+	exit 1
+fi
+
+SECRET=~/.vaultme
+rm -f ${SECRET}
+touch ${SECRET}
+chmod 0600 ${SECRET}
+(
+echo -n "{"
+n=0
+while (( $# )); do
+	key=${1%%=*}
+	val=${1##*=}
+	if [[ "${key}=${val}" != $1 ]]; then
+		echo >&2 "${1}: invalid key-value specification"
+		exit 3
+	fi
+
+	if [[ -z $val ]]; then
+		val=$(pwgen 64 1)
+	fi
+	if (( $n )); then
+		echo -n ","
+	fi
+	echo -n "\"${key}\":\"${val}\""
+	shift
+	n=1
+done
+echo "}"
+)> ${SECRET}
+vault write ${path} @${SECRET}
+rm -f ${SECRET}
+
+# vim:ft=bash
