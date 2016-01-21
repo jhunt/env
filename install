@@ -1,28 +1,31 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e
 
-case $OSTYPE in
-(darwin*)
-	echo "running on a mac..."
-	;;
-(linux*)
-	echo "running on a linux..."
-	DIST=$(lsb_release -si)
-	case ${DIST} in
-	(Ubuntu)
-		echo "ensuring required system packages are present..."
-		sudo apt-get update >/dev/null
-		sudo apt-get install -y >/dev/null \
-			libtime-hires-perl \
-			vim
+if [[ ${1} == "init" ]]; then
+	echo "entering initial setup"
+	case $OSTYPE in
+	(darwin*)
+		echo "running on a mac..."
+		;;
+	(linux*)
+		echo "running on a linux..."
+		DIST=$(lsb_release -si)
+		case ${DIST} in
+		(Ubuntu)
+			echo "ensuring required system packages are present..."
+			sudo apt-get update >/dev/null
+			sudo apt-get install -y >/dev/null \
+				libtime-hires-perl \
+				vim
+			;;
+		esac
+		;;
+	(*)
+		echo "*** UNRECOGNIZED SYSTEM (OSTYPE) FOUND: ${OSTYPE} ***"
 		;;
 	esac
-	;;
-(*)
-	echo "*** UNRECOGNIZED SYSTEM (OSTYPE) FOUND: ${OSTYPE} ***"
-	;;
-esac
+fi
 
 echo "setting up dot files in ~"
 (
