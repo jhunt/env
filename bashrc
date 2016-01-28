@@ -103,4 +103,4 @@ if ! ls --color=auto /enoent 2>&1 >/dev/null | grep -q illegal; then
 	alias ls="ls --color=auto"
 fi
 
-pathify
+pathify -p $HOME/bin
