@@ -24,16 +24,13 @@ need_command() {
 
 need_command vault
 
-if [[ -z ${VAULT_ADDR} ]]; then
-	echo >&2 "No \$VAULT_ADDR is set; are you targetting a Vault?"
-	exit 1
-fi
-
 for path in $(grep -r '(( *vault ' "$@" | sed -e 's/.* (( *vault  *"//;s/:.*" *))//' | sort -u); do
 	echo ${path}
-	echo ${path} | sed -e 's/./-/g'
-	vault read ${path} | sed -e '1,2d;s/^/  - /;s/      //'
-	echo ; echo
+	if [[ -n ${VAULT_ADDR} ]]; then
+		echo ${path} | sed -e 's/./-/g'
+		vault read ${path} | sed -e '1,2d;s/^/  - /;s/      //'
+		echo ; echo
+	fi
 done
 
 # vim:ft=bash
