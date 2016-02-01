@@ -56,7 +56,7 @@ if [[ ! -f ~/bin/jq ]]; then
 		;;
 	esac
 fi
-if [[ ! -f ~/bin/spruce ]]; then
+if [[ -z "$(command -v spruce)" ]]; then
 	version=0.13.0
 	echo "  installing spruce (v${version})..."
 	case $OSTYPE in
