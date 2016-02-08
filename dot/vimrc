@@ -5,7 +5,7 @@
 "
 " author:    James Hunt <james@niftylogic.com>
 " created:   2008-06-27
-" updated:   2011-11-10, jrh: port to Synacor; Updated some F2/F3/F9 to be more useful
+" updated:   almost every day since then
 "
 
 "################################################################################
@@ -125,11 +125,13 @@ inoremap <F7> <Esc>:let @a=system("pwgen 32 1")<CR>a<C-R>a<Esc>kJxa
 """ ###   Easy .vimrc Management   ###########################################
 """
 
-"""   ;v - Open .vimrc in a new buffer for editing
-map ;v :sp ~/.vimrc<CR>
+let mapleader=";"
+
+"""   ;v - cpen .vimrc in a new buffer for editing
+"map <leader>v :sp ~/.vimrc<CR>
 
 """   ;u - Reload .vimrc (in current buffer)
-map ;u :source ~/.vimrc<CR>
+"map <leader>u :source ~/.vimrc<CR>
 
 """
 """
@@ -137,17 +139,17 @@ map ;u :source ~/.vimrc<CR>
 """
 
 """   ;cp - Set for COPY mode (turn off non-printing chars)
-map ;cp :set nonumber<CR>:set nolist<CR>
+map <leader>cp :set nonumber<CR>:set nolist<CR>
 
 """   ;pc - Opposite of ;cp - turns on non-printing chars
-map ;pc :set number<CR>:set list<CR>
+map <leader>pc :set number<CR>:set list<CR>
 
 """   ;l6
-map ;lw a<C-R>=system("lipsum 1 1")<CR>
-map ;lt a<C-R>=system("lipsum 4 7")<CR>
-map ;lp a<C-R>=system("lipsum 20 40")<CR>
-map ;lP a<C-R>=system("lipsum 40 120")<CR>
-map ;ll a<C-R>=system("lipsum 4 16")<CR>
+map <leader>lw a<C-R>=system("lipsum 1 1")<CR>
+map <leader>lt a<C-R>=system("lipsum 4 7")<CR>
+map <leader>lp a<C-R>=system("lipsum 20 40")<CR>
+map <leader>lP a<C-R>=system("lipsum 40 120")<CR>
+map <leader>ll a<C-R>=system("lipsum 4 16")<CR>
 
 """
 """
@@ -155,10 +157,10 @@ map ;ll a<C-R>=system("lipsum 4 16")<CR>
 """
 
 """   ;n - Collapse successive empty (spaces or tabs allowed) lines
-map ;n GoZ<Esc>:g/^[ <Tab>]*$/.,/[^ <Tab>]/-j<CR>Gdd
+map <leader>n GoZ<Esc>:g/^[ <Tab>]*$/.,/[^ <Tab>]/-j<CR>Gdd
 
 """   ;c - Clear leading spaces and enter insertion mode
-map ;c :,s/^[ <Tab>]*//g<CR>i
+map <leader>c :,s/^[ <Tab>]*//g<CR>i
 
 """
 """
@@ -166,14 +168,14 @@ map ;c :,s/^[ <Tab>]*//g<CR>i
 """
 
 """   ;h - Write current file out in highlighted HTML
-map ;h :source $VIM/vimcurrent/syntax/2html.vim<CR>:w<CR>:close<CR>
+map <leader>h :source $VIM/vimcurrent/syntax/2html.vim<CR>:w<CR>:close<CR>
 
-map ;t :!vimtest %<CR>
-map ;m :!upmake local <CR>
-map ;b :!upmake build <CR>
-map ;l :!perl -Ilib -c %<CR>
+map <leader>t :!vimtest %<CR>
+map <leader>m :!upmake local <CR>
+map <leader>b :!upmake build <CR>
+map <leader>l :!perl -Ilib -c %<CR>
 
-map ;= :let _s=@/<Bar>,/^$/-1!column -t<CR>:let @/=_s<CR>
+map <leader>= :let _s=@/<Bar>,/^$/-1!column -t<CR>:let @/=_s<CR>
 
 command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
 
