@@ -97,6 +97,9 @@ done
 if [ -f ~/.bashrc.local ]; then
 	. ~/.bashrc.local
 fi
+if [ -f ~/.title ]; then
+	title $(cat ~/.title)
+fi
 
 eval $(dircolors)
 if ! ls --color=auto /enoent 2>&1 >/dev/null | grep -q illegal; then
