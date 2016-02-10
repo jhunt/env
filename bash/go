@@ -35,6 +35,7 @@ go() {
 		command go get github.com/onsi/ginkgo && \
 		command go get github.com/onsi/ginkgo/ginkgo && \
 		command go get github.com/onsi/gomega && \
+		command go get github.com/mitchellh/gox && \
 		true
 		return $?
 	else
