@@ -40,7 +40,7 @@ mkdir -p ~/.vim
 rsync -a vim/ ~/.vim/
 
 echo "copying in ~/bin scripts..."
-mkdir -p ~/bin ~/sw
+mkdir -p ~/bin ~/sw ~/code
 cp ~/env/bin/* ~/bin
 
 if [[ ! -f ~/bin/jq ]]; then
