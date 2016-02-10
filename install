@@ -47,28 +47,26 @@ if [[ ! -f ~/bin/jq ]]; then
 	echo "  installing jq..."
 	case $OSTYPE in
 	(darwin*)
-		curl -Ls https://github.com/stedolan/jq/releases/download/jq-1.5/jq-osx-amd64 > ~/bin/jq
+		curl -Ls -o ~/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-osx-amd64
 		chmod 0755 ~/bin/jq
 		;;
 	(linux*)
-		curl -Ls https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 > ~/bin/jq
+		curl -Ls -o ~/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 		chmod 0755 ~/bin/jq
 		;;
 	esac
 fi
 if [[ -z "$(command -v spruce)" ]]; then
-	version=0.13.0
+	version=1.0.2
 	echo "  installing spruce (v${version})..."
 	case $OSTYPE in
 	(darwin*)
-		curl -Ls https://github.com/geofffranks/spruce/releases/download/v${version}/spruce_${version}_darwin_amd64.zip > spruce.zip
-		unzip -p spruce.zip spruce_${version}_darwin_amd64/spruce > ~/bin/spruce
+		curl -Ls -o ~/bin/spruce https://github.com/geofffranks/spruce/releases/download/v${version}/spruce-darwin-amd64
 		chmod 0755 ~/bin/spruce
-		rm spruce.zip
 		;;
 	(linux*)
-		curl -Ls https://github.com/geofffranks/spruce/releases/download/v${version}/spruce_${version}_linux_amd64.tar.gz | \
-			tar -xz --strip-components 1 -C ~/bin/ spruce_${version}_linux_amd64/spruce
+		curl -Ls -o ~/bin/spruce https://github.com/geofffranks/spruce/releases/download/v${version}/spruce-linux-amd64
+		chmod 0755 ~/bin/spruce
 		;;
 	esac
 fi
