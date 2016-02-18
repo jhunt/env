@@ -12,13 +12,13 @@ while (<>) {
 	if (m/^-+ *BEGIN CERTIFICATE *-+$/) {
 		die "Unexpected BEGIN CERTIFICATE found...\n" if $mode ne 'public';
 		$mode = 'public';
-	} elsif (m/^-+ *BEGIN PRIVATE KEY *-+$/) {
+	} elsif (m/^-+ *BEGIN .*PRIVATE KEY *-+$/) {
 		if (@sofar) {
 			my $s = join('\n', @sofar); @sofar = ();
 			print qq($sep"$mode":"$s");
 			$sep = ',';
 		}
-		die "Unexpected BEGIN PRIVATE KEY found...\n" if $mode ne 'public';
+		die "Unexpected BEGIN * PRIVATE KEY found...\n" if $mode ne 'public';
 		$mode = 'private';
 	}
 	push @sofar, $_;
