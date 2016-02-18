@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+if [[ -f .git/config ]]; then
+	sed -i'' -e 's|https://github.com/|git@github.com:|' .git/config
+fi
+
+echo "The git-fu is strong with this one..."
