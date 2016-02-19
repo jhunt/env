@@ -17,15 +17,21 @@ fi
 
 echo "trying ${NAME} ${VERSION}"
 CHECK_URL="http://bosh.io/releases/github.com/${NAME}?all=1"
+if ! curl --fail -Ls ${CHECK_URL} >/dev/null; then
+
+	NAME="${NAME}-boshrelease"
+	echo "trying ${NAME} ${VERSION}"
+	CHECK_URL="http://bosh.io/releases/github.com/${NAME}?all=1"
+	if ! curl --fail -Ls ${CHECK_URL} >/dev/null; then
+		echo >&2 "Failed to find BOSH release ${NAME}/${VERSION}"
+		echo >&2 "  (from ${CHECK_URL})"
+		exit 2
+	fi
+fi
+
 GET_URL="https://bosh.io/d/github.com/${NAME}"
 if [[ "${VERSION}" != "latest" ]]; then
 	GET_URL="${GET_URL}?v=${VERSION}"
 fi
 
-if ! curl --fail -Ls ${CHECK_URL} >/dev/null; then
-	echo >&2 "Failed to find BOSH release ${NAME}/${VERSION}"
-	echo >&2 "  (from ${CHECK_URL})"
-	exit 2
-fi
-
-echo "bosh upload release ${GET_URL}"
+echo bosh upload release ${GET_URL}
