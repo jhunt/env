@@ -25,10 +25,9 @@ need_command() {
 need_command vault
 
 for path in $(grep -r '(( *vault ' "$@" | sed -e 's/.* (( *vault  *"//;s/:.*" *))//' | sort -u); do
-	echo ${path}
+	echo "# ${path}"
 	if [[ -n ${VAULT_ADDR} ]]; then
-		echo ${path} | sed -e 's/./-/g'
-		vault read ${path} | sed -e '1,2d;s/^/  - /;s/      //'
+		vault read --format json ${path} | jq .data
 		echo ; echo
 	fi
 done
