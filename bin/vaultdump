@@ -8,10 +8,6 @@
 # created: 2016-01-21
 #
 
-if [[ -z ${1} ]]; then
-	echo >&2 "USAGE: $0 *.yml"
-	exit 1
-fi
 
 need_command() {
 	local cmd=${1:?need_command() - no command name given}
@@ -22,14 +18,21 @@ need_command() {
 	fi
 }
 
-need_command vault
+dump_secrets() {
+	need_command vault
+	for path in $(grep -r '(( *vault ' "$@" | sed -e 's/.* (( *vault  *"//;s/:.*" *))//' | sort -u); do
+		echo "# ${path}"
+		if [[ -n ${VAULT_ADDR} ]]; then
+			vault read --format json ${path} | jq .data
+			echo ; echo
+		fi
+	done
+}
 
-for path in $(grep -r '(( *vault ' "$@" | sed -e 's/.* (( *vault  *"//;s/:.*" *))//' | sort -u); do
-	echo "# ${path}"
-	if [[ -n ${VAULT_ADDR} ]]; then
-		vault read --format json ${path} | jq .data
-		echo ; echo
-	fi
-done
+if [[ -n ${1} ]]; then
+	dump_secrets "$@"
+else
+	dump_secrets $(find . -name '*.yml')
+fi
 
 # vim:ft=bash
