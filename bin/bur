@@ -34,4 +34,4 @@ if [[ "${VERSION}" != "latest" ]]; then
 	GET_URL="${GET_URL}?v=${VERSION}"
 fi
 
-echo bosh upload release ${GET_URL}
+bosh upload release ${GET_URL}
