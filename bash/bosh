@@ -1,0 +1,44 @@
+# bashrc for BOSH hacking
+
+#
+# Wrap the main bosh command to support injected sub-commands
+#
+#  bosh route          Recreate the local BOSH-lite host routes
+#  bosh curl           curl the BOSH director (with auth)
+#  bosh sync           Download all the manifests!
+#  bosh rere           Recreate release + upload release + deploy
+#
+#  bosh *              Hand off to the main bosh binary
+#
+bosh() {
+	case ${1} in
+	(route)
+		sudo ip route del 10.244.0.0/16 && \
+		sudo ip route add 10.244.0.0/16 via 192.168.50.4
+		return $?
+		;;
+
+	(curl)
+		echo >&2 "not impl yet.  use bosh-curl"
+		return 1
+		;;
+
+	(sync)
+		dest=$2
+		if [[ -z ${dest} ]]; then
+			echo >&2 "Usage: bosh sync /path/to/save/to"
+			return 1
+		fi
+
+		for deployment in $(bosh-curl /deployments | jq -r .[].name); do
+			bosh download manifest ${deployment} ${dest}/${deployment}.yml
+		done
+		return 0
+		;;
+
+	(*)
+		command bosh "$@"
+		return $?
+		;;
+	esac
+}
