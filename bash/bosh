@@ -36,6 +36,11 @@ bosh() {
 		return 0
 		;;
 
+	(rere)
+		command bosh create release --force && bosh upload release && bosh -n deploy
+		return $?
+		;;
+
 	(*)
 		command bosh "$@"
 		return $?
