@@ -19,8 +19,17 @@ bosh() {
 		;;
 
 	(curl)
-		echo >&2 "not impl yet.  use bosh-curl"
-		return 1
+		url=$2
+		if [[ -z ${url} ]]; then
+			echo >&2 "Usage: bosh curl relative-url"
+			return 1
+		fi
+		config=${BOSH_CONFIG:-$HOME/.bosh_config}
+		target=$(  spruce json $config | jq -r .target)
+		username=$(spruce json $config | jq -r '.auth["'${target}'"].username')
+		password=$(spruce json $config | jq -r '.auth["'${target}'"].password')
+		curl -Lsk --basic --user "${username}:${password}" "${target}/${url}"
+		return $?
 		;;
 
 	(sync)
@@ -30,7 +39,8 @@ bosh() {
 			return 1
 		fi
 
-		for deployment in $(bosh-curl /deployments | jq -r .[].name); do
+		mkdir -p ${dest}
+		for deployment in $(bosh curl /deployments | jq -r .[].name); do
 			bosh download manifest ${deployment} ${dest}/${deployment}.yml
 		done
 		return 0
