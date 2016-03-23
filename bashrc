@@ -77,6 +77,8 @@ if [[ $? != 0 ]]; then
 fi
 if [[ "$(command -v brew)" != "" ]]; then
 	PATH="$(brew --prefix coreutils)/libexec/gnubin:$(brew --prefix gnu-indent)/bin:/usr/local/sbin:/usr/local/bin:$PATH"
+	MANPATH=$(brew --prefix coreutils)/share/man:$(brew --prefix gnu-indent)/share/man:/usr/share/man:/usr/local/share/man
+	export MANPATH
 fi
 
 if [[ -d $HOME/sw ]]; then
