@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for file in $(find . -name '*.c'); do
+	echo ">> $file"
+	SIMPLE_BACKUP_SUFFIX='~' indent "$file"
+	rm -f "$file~"
+done
