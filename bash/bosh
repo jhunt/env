@@ -5,7 +5,7 @@
 #
 #  bosh route          Recreate the local BOSH-lite host routes
 #  bosh curl           curl the BOSH director (with auth)
-#  bosh sync           Download all the manifests!
+#  bosh msync          Download all the manifests!
 #  bosh rere           Recreate release + upload release + deploy
 #
 #  bosh *              Hand off to the main bosh binary
@@ -32,10 +32,10 @@ bosh() {
 		return $?
 		;;
 
-	(sync)
+	(msync)
 		dest=$2
 		if [[ -z ${dest} ]]; then
-			echo >&2 "Usage: bosh sync /path/to/save/to"
+			echo >&2 "Usage: bosh msync /path/to/save/to"
 			return 1
 		fi
 
