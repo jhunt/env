@@ -1,0 +1,32 @@
+#!/bin/bash
+set -e
+
+check_cla() {
+  local passchar="\xe2\x9c\x94" # U+2714 - ballot check
+  local failchar="\xe2\x9c\x98" # U+2718 - ballot x
+  local rc=0
+  local IFS=$'\n'
+
+  echo "Checking CONTRIBUTOR status..."
+  for x in $(git log --pretty=format:'%aE %h - %s (%aN <%aE>)' ${1}); do
+    email=${x%% *}
+    desc=${x#* }
+    if grep -q '^[^#].*<'${email}'>' ${2}; then
+      echo -e "\033[32m${passchar}\033[0m $desc"
+    else
+      echo -e "\033[31m${failchar}\033[0m $desc"
+      echo -e "  \033[31m<${email}> not listed in ${2} file!\033[0m"
+      rc=1
+    fi
+  done
+  echo
+
+  return $rc
+}
+
+if [[ -z ${1} ]]; then
+  echo >&2 "USAGE: $0 <commit-range>"
+  exit 1
+fi
+
+check_cla ${1} ${2:CONTRIBUTORS}
