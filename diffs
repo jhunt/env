@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo "checking dot files in ~"
+(
+cd ~/env/dot
+changed=0
+for FILE in *; do
+	diff -u ~/.$FILE $FILE || changed=1
+done
+if [[ $changed == 0 ]]; then
+	echo "(no changes)"
+fi
+)
+
+echo
+echo "checking ~/bin scripts..."
+(
+cd ~/env/bin
+changed=0
+for FILE in *; do
+	diff -u ~/bin/$FILE $FILE || changed=1
+done
+if [[ $changed == 0 ]]; then
+	echo "(no changes)"
+fi
+)
