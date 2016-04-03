@@ -10,6 +10,6 @@ if [[ $# = 0 ]]; then
 fi
 
 for REPO in "$@"; do
-	echo "git clone git@github.com:filefrog/$REPO.git"
-	git clone git@github.com:filefrog/$REPO.git
+	echo "git clone git@github.com:jhunt/$REPO.git"
+	git clone git@github.com:jhunt/$REPO.git
 done
