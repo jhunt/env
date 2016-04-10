@@ -19,6 +19,7 @@ else
 	alias diff='/usr/bin/diff -u'
 fi
 alias vgmem='valgrind --leak-check=full --show-reachable=yes'
+alias rss='newsbeuter'
 
 # Configure Environment ###############################
 # V=0 causes quiet output from automake builds
