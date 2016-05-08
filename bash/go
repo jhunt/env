@@ -32,6 +32,11 @@ go() {
 		tmux a -t "${name}" &>/dev/null || cd ${GOPATH}
 
 	elif [[ $1 == "setup" ]]; then
+		if [[ -n $2 ]]; then
+			echo "Setting up $2"
+			mkdir -p ${HOME}/code/go/$2
+			go be $2
+		fi
 		command go get github.com/tools/godep && \
 		command go get github.com/golang/lint/golint && \
 		command go get github.com/onsi/ginkgo && \
