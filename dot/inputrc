@@ -7,3 +7,8 @@ set match-hidden-files off
 set menu-complete-display-prefix on
 set print-completions-horizontally on
 set colored-stats on
+
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+$include /etc/inputrc
