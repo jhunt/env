@@ -59,6 +59,9 @@ if [[ -n ${GOENV} ]]; then
 fi
 
 export PS1=$(echo "$PROMPT_SHLVL+$PROMPT_GO%B[\t]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'"$PROMPT_TT %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
+if [[ -n ${SIMPLE} ]]; then
+	export PS1=$(echo "%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
+fi
 
 type git >/dev/null 2>&1
 if [[ $? == 0 ]]; then
