@@ -115,4 +115,5 @@ if ! ls --color=auto /enoent 2>&1 >/dev/null | grep -q illegal; then
 	alias ls="ls --color=auto"
 fi
 
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 pathify -p $HOME/bin
