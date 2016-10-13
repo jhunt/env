@@ -1,0 +1,41 @@
+#!/bin/bash
+
+SECRET=$1
+CERT=$2
+KEY=$3
+if [[ -z ${SECRET} || -z ${CERT} || -z ${KEY} ]]; then
+  echo >&2 "USAGE: $0 vault/path/secret /path/to/cert.pem /path/to/key.pem"
+  exit 1
+fi
+if [[ ! -f ${CERT} ]]; then
+  echo "Certificate ${CERT}: No such file or directory."
+  exit 1
+fi
+if [[ ! -f ${KEY} ]]; then
+  echo "Key ${KEY}: No such file or directory."
+  exit 1
+fi
+if ! safe target 2>&1 | grep -qi 'currently targeting'; then
+  echo "Please target a vault first, via \`safe target'."
+  exit 1
+fi
+
+safe target
+echo
+echo -n "Import ${SECRET} from ${CERT} / ${KEY}? [yes/NO] "
+read CONFIRMED
+if [[ ${CONFIRMED} != "yes" ]]; then
+  echo "No confidence.  Aborting..."
+  exit 1
+fi
+
+(echo "---"
+ echo "$SECRET:"
+ echo "  cert: |"
+ cat ${CERT} | sed -e 's/^/    /'
+ echo "  key: |"
+ cat ${KEY}  | sed -e 's/^/    /'
+ echo "  combined: |"
+ cat ${CERT} | sed -e 's/^/    /'
+ cat ${KEY}  | sed -e 's/^/    /'
+) | spruce json | safe import
