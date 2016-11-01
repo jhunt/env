@@ -37,12 +37,28 @@ go() {
 			mkdir -p ${HOME}/code/go/$2
 			go be $2
 		fi
-		command go get github.com/tools/godep && \
 		command go get github.com/golang/lint/golint && \
 		command go get github.com/onsi/ginkgo && \
 		command go get github.com/onsi/ginkgo/ginkgo && \
 		command go get github.com/onsi/gomega && \
 		command go get github.com/mitchellh/gox && \
+		true
+		return $?
+
+	elif [[ $1 == "refresh" ]]; then
+		if [[ -n $2 ]]; then
+			if [[ ! -d ${HOME}/code/go/$2 ]]; then
+				echo "$2 not set up yet."
+				echo "Try \`go setup $2\`"
+				return 1
+			fi
+			go be $2
+		fi
+		command go get -u github.com/golang/lint/golint && \
+		command go get -u github.com/onsi/ginkgo && \
+		command go get -u github.com/onsi/ginkgo/ginkgo && \
+		command go get -u github.com/onsi/gomega && \
+		command go get -u github.com/mitchellh/gox && \
 		true
 		return $?
 	else
