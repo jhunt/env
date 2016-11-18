@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# cfme - Manage multiple CF endpoints with ease
+#
+# USAGE:
+#   cfme                          # list all the targets
+#   cfme prod                     # target 'prod'
+#   cfme sandbox New Sandbox Env  # create a new target
+#
+
+if [[ ! -h ~/.cf ]]; then
+	echo >&2 "~/.cf is not symlink; bailing..."
+	exit 1
+fi
+if [[ -z $1 ]]; then
+	for target in $(ls -d ~/.cf-*); do
+		name=$(cat ${target}/cfme 2>/dev/null)
+		printf "  %-10s  %s\n" ${target##~/.cf-} "${name:-(unnamed)}"
+	done
+	echo
+	echo "use 'cfme <env>' to target an environment"
+	exit 0
+fi
+
+target=$1
+shift
+if [[ -n $1 ]]; then
+	mkdir -p ~/.cf-${target}
+	echo "$*" > ~/.cf-${target}/cfme
+	exit 0
+fi
+if [[ ! -d ~/.cf-${target} ]]; then
+	echo >&2 "$target: unrecognized cf environment"
+	exit 1
+fi
+
+rm ~/.cf
+ln -s ~/.cf-${target} ~/.cf
+cf api
