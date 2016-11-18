@@ -8,12 +8,12 @@
 #   cfme sandbox New Sandbox Env  # create a new target
 #
 
-if [[ ! -h ~/.cf ]]; then
+if [[ -e ~/.cf && ! -h ~/.cf ]]; then
 	echo >&2 "~/.cf is not symlink; bailing..."
 	exit 1
 fi
 if [[ -z $1 ]]; then
-	for target in $(ls -d ~/.cf-*); do
+	for target in $(ls -d ~/.cf-* 2>/dev/null); do
 		name=$(cat ${target}/cfme 2>/dev/null)
 		printf "  %-10s  %s\n" ${target##~/.cf-} "${name:-(unnamed)}"
 	done
@@ -34,6 +34,6 @@ if [[ ! -d ~/.cf-${target} ]]; then
 	exit 1
 fi
 
-rm ~/.cf
+rm -f ~/.cf
 ln -s ~/.cf-${target} ~/.cf
 cf api
