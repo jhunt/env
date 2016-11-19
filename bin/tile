@@ -1,5 +1,4 @@
 #!/bin/bash
-set -ex
 
 #
 # tile - A tile downloader for Pivotal Network
@@ -14,6 +13,7 @@ if [[ -z ${URL} ]]; then
   exit 1
 fi
 
+URL=${URL%/download}/download
 EULA=$(sed -e 's@\(/releases/[0-9][0-9]*\)/.*@\1/eula_acceptance@' <<<$URL)
 if [[ ${EULA} == ${URL} ]]; then
   echo >&2 "'${URL}' doesn't look like a valid release / stemcell url..."
@@ -29,5 +29,8 @@ if [[ -z ${PIVNET_API_KEY} ]]; then
   exit 1
 fi
 
-curl -vv -L  -X POST -H "Authorization: Token ${PIVNET_API_KEY}" ${EULA}
-curl -vv -LO -X GET  -H "Authorization: Token ${PIVNET_API_KEY}" ${URL}
+curl -L  -X POST -H "Authorization: Token ${PIVNET_API_KEY}" ${EULA}
+# /download will redirect from the POST to S3, which has to then be
+# followed over GET.  -X POST will _force_ POST on all subsequent
+# redirects, so we have to use `-d ''` to imply a POST operation.
+curl -LO -d ''   -H "Authorization: Token ${PIVNET_API_KEY}" ${URL}
