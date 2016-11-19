@@ -1,0 +1,33 @@
+#!/bin/bash
+set -ex
+
+#
+# tile - A tile downloader for Pivotal Network
+#
+# author:  James Hunt <james@niftylogic.com>
+# created: 2016-11-19
+#
+
+URL=$1
+if [[ -z ${URL} ]]; then
+  echo >&2 "USAGE: $0 https://network.pivotal.io/..."
+  exit 1
+fi
+
+EULA=$(sed -e 's@\(/releases/[0-9][0-9]*\)/.*@\1/eula_acceptance@' <<<$URL)
+if [[ ${EULA} == ${URL} ]]; then
+  echo >&2 "'${URL}' doesn't look like a valid release / stemcell url..."
+  exit 2
+fi
+
+if [[ -z ${PIVNET_API_KEY} ]]; then
+  echo >&2 "PIVNET_API_KEY is not set in your environment"
+  echo >&2 "You need to set it, like this:"
+  echo >&2
+  echo >&2 "  export PIVNET_API_KEY=\"your-api-key\""
+  echo >&2
+  exit 1
+fi
+
+curl -vv -L  -X POST -H "Authorization: Token ${PIVNET_API_KEY}" ${EULA}
+curl -vv -LO -X GET  -H "Authorization: Token ${PIVNET_API_KEY}" ${URL}
