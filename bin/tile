@@ -7,12 +7,14 @@
 # created: 2016-11-19
 #
 
-URL=$1
+TILE=$1
+URL=$2
 if [[ -z ${URL} ]]; then
-  echo >&2 "USAGE: $0 https://network.pivotal.io/..."
+  echo >&2 "USAGE: $0 product-x.y.z https://network.pivotal.io/..."
   exit 1
 fi
 
+TILE=${TILE%.pivotal}.zip
 URL=${URL%/download}/download
 EULA=$(sed -e 's@\(/releases/[0-9][0-9]*\)/.*@\1/eula_acceptance@' <<<$URL)
 if [[ ${EULA} == ${URL} ]]; then
@@ -29,8 +31,8 @@ if [[ -z ${PIVNET_API_KEY} ]]; then
   exit 1
 fi
 
-curl -L  -X POST -H "Authorization: Token ${PIVNET_API_KEY}" ${EULA}
+curl -L -X POST -H "Authorization: Token ${PIVNET_API_KEY}" ${EULA}
 # /download will redirect from the POST to S3, which has to then be
 # followed over GET.  -X POST will _force_ POST on all subsequent
 # redirects, so we have to use `-d ''` to imply a POST operation.
-curl -LO -d ''   -H "Authorization: Token ${PIVNET_API_KEY}" ${URL}
+curl -L -d ''   -H "Authorization: Token ${PIVNET_API_KEY}" ${URL} -o ${TILE}
