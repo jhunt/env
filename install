@@ -82,14 +82,14 @@ if [[ ! -f ~/.bash_profile ]]; then
 	echo ". ~/.bashrc" > ~/.bash_profile
 fi
 
-if [[ -n ${IAMJAMESHUNT} || "${USER}" == "jhunt" || "${USER}" == "jrhunt" ]]; then
+if [[ "${USER}" == "quinn" || "${USER}" == "quintessence" ]]; then
 	if [[ ! -f ~/.ssh/authorized_keys ]]; then
 		echo "setting up ~/.ssh/authorized_keys"
 		if [[ ! -d ~/.ssh ]]; then
 			mkdir -m 0700 ~/.ssh
 		fi
 
-		MAIN_PUBLIC="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzBc3qXx9fhO6lDtGCV8URDvzPt2WaKjpuWU6BtFKXCvsa0Y0S+Ej0Xn6CS7aEK8Cs0h0ZPm04Ye6XgOT2h/asHGcKvFfsEtUG2Y0tdLGx28WKsFfYb9UFYEqb258SyKYJIbmT9SI7K4wgD0wxri6bP3W7wdSqXC+vl7fU//XF98o/cv7gpUsENnEq15+0Ed40y5XKIzNqLUFGNWirBwW0OfjYCdXyfFnqd6xvtNfchOu7uRxdSDJ5rVsBHZWfCrxHzvz6Z2S7Ui8iJ1SmIckNhE6qYMccgvp1TggTZrO6baKMc8JSnO8ClWc9mLdEJiQHkCqDtrarnHEyk26UsqlV jhunt@MAIN"
+		MAIN_PUBLIC="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAaSVARaZbKnzChv22BeEJzkGNuMyeRyhU2RUOpYrNs7jFrFQPbS9s5MI1PNmTVGbghk/XCfYDaaqaI+dMxwiE3ZwnlbyR/ENgBytmw8sBwGKwUCukpKs/hcyZCCbdUSZWdisJpoWokd8kwp6EaU2OXVH+beKrbzwT9+HH+PC5uIPTsW6QGrbIUQFyldJR+/atAtJtDWr8yVOoamc5sfu5sbHHgFO7jnxzrMIY9t9YuxaWTx1gGthsflQAHEJHYzYZqEvxkKO29VS7uf0YZTX/JNbdrIkdxsVxXywcX6r1HWBjBNVc74JyZMlJRsikJgq9BhkgOIVvsY8pXlQWHAJhg0Y7Z4ff6fXCSi0bv1LcBzCfaQZY+nELckSXq7XuV0/7c6zmHGIlDI771SPZxlffLCqujAN0jQa2gR7F/rEop+0dGQKZWxeUDfPwalyQIzbENyKYLTHCuGBT00G64N/HrrKyN+mEmnG6GdBTHUGkZ/tslAJdjWCF0U4ZB8djYqWqTLbyRcepojMrZshzOWEvJ32sdFaQkv7gfK2ul2arDYmWK7XPIofoC2ngiD4acBUF9lSf/7PsUcSauAswvpiP1B9uOJJhH4gUZqoe7L2sITDWggU5slTU9Xz9BUPnCm/oU4s2wjgE/LPCtWkCE3HORgam8bxFfIJdTLyYvAnKAQ== quinn@Quintessences-MacBook-Pro.local"
 		echo "${MAIN_PUBLIC}" > ~/.ssh/authorized_keys
 		chmod 0600 ~/.ssh/authorized_keys
 	fi

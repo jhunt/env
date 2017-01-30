@@ -27,13 +27,6 @@ MSSH=mssh
 REMOTE_HOST=$(basename $0);
 REMOTE_USER=$USER;
 
-# this part is specific to the jhunt/jrhunt discrepency
-# if you are not jhunt, and don't know what mango is,
-# please disregard.
-if [[ "$REMOTE_HOST" == "mango" ]]; then
-	REMOTE_USER=jrhunt
-fi
-
 if [[ "$REMOTE_HOST" == "$MSSH" ]]; then
 	echo "Don't use mssh directly"
 	echo "Use \`remember\` and \`forget\`"

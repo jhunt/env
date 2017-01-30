@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [[ -n ${IAMJAMESHUNT} || "${USER}" == "jhunt" || "${USER}" == "jrhunt" ]]; then
-  git config --global user.name  "James Hunt"
-  git config --global user.email james@niftylogic.com
+if [[ "${USER}" == "quinn" || "${USER}" == "quintessence" ]]; then
+  git config --global user.name  "Quintessence"
+  git config --global user.email quintessenceanx@gmail.com
 fi
 
 git config --global alias.st "status"
