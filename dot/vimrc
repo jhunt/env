@@ -283,3 +283,18 @@ function! CursorPing()
 endfunction
 
 map <C-L> :call CursorPing()<CR>
+
+" No search highlighting
+set nohlsearch
+
+"""
+"""
+""" ###   Copy/Paste Support   ###############################################
+"""
+
+"""   ;cp - Set for COPY mode (turn off non-printing chars)
+map <leader>cp :set nonumber<CR>:set nolist<CR>
+
+"""   ;pc - Opposite of ;cp - turns on non-printing chars
+map <leader>pc :set number<CR>:set list<CR>
+:set nolist
