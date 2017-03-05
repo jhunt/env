@@ -111,9 +111,11 @@ if [ -f ~/.title ]; then
 	title $(cat ~/.title)
 fi
 
-eval $(dircolors)
-if ! ls --color=auto /enoent 2>&1 >/dev/null | grep -q illegal; then
-	alias ls="ls --color=auto"
+if [[ -n "$(command -v dircolors 2>/dev/null)" ]]; then
+	eval $(dircolors)
+	if ! ls --color=auto /enoent 2>&1 >/dev/null | grep -q illegal; then
+		alias ls="ls --color=auto"
+	fi
 fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
