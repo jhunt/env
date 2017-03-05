@@ -8,6 +8,11 @@ if [[ ${1} == "init" ]]; then
 	(darwin*)
 		echo "running on a mac..."
 		;;
+
+	(freebsd*)
+		echo "running on a freebsd..."
+		;;
+
 	(linux*)
 		echo "running on a linux..."
 		DIST=$(lsb_release -si)
