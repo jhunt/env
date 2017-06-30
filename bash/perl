@@ -14,4 +14,8 @@ if [[ -d "${HOME}/perl5/lib/perl5" ]]; then
 	export PERL5LIB
 fi
 
+sys_perl() {
+	PERL5LIB= PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin perl "$@"
+}
+
 # vim:ft=bash
