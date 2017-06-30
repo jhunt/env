@@ -192,6 +192,9 @@ if has("autocmd")
   " Treat *.tt as HTML
   au BufNewFile,BufRead *.tt                    set ft=html
 
+  " Treat *.lsp, *.ll, *.lisp as LISP
+  au BufNewFile,BufRead *.lsp,*.ll,*.lisp       set ft=lisp et ts=2 sts=2 sw=2
+
   " Treat *.tt as HTML
   au BufNewFile,BufRead *.jst                   set ft=atlas
 
