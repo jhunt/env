@@ -59,10 +59,16 @@ if [[ -n ${GOENV} ]]; then
 	PROMPT_GO="%K[${GOENV}]|"
 fi
 
-export PS1=$(echo "$PROMPT_SHLVL+$PROMPT_GO%B[\t]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'"$PROMPT_TT %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
+export PS1=$(echo "$PROMPT_SHLVL+$PROMPT_GO%B[\D{%%j+%%H:%%M:%%S}]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'"$PROMPT_TT %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
 if [[ -n ${SIMPLE} ]]; then
 	export PS1=$(echo "%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
 fi
+
+demomode() {
+	export PS1=$(echo "%G[\u] %B[\w] %Y[→] " | $HOME/env/colorize);
+	export PS0="$PS1 "
+	clear
+}
 
 type git >/dev/null 2>&1
 if [[ $? == 0 ]]; then
@@ -78,6 +84,8 @@ screen)
 	export PROMPT_COMMAND=$PROMPT_COMMAND'echo -ne "\033]2;${USER}@${PROMPT_HOST} ${PROMPT_ADDR}${PWD}\033k${PROMPT_HOST}\033\\"'
 	;;
 esac
+
+export LISP_PS1=$(echo -e "\033[1;36m🦄\033[0m ")' '
 
 echo $PATH | grep -q "$HOME/bin";
 if [[ $? != 0 ]]; then
