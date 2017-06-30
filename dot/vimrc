@@ -60,8 +60,8 @@ set formatoptions=tcqo
 set hlsearch
 
 " Print representations of trailing spaces, tabs and end-of-line
-highlight SpecialKey ctermfg=DarkGray
-highlight NonText    ctermfg=DarkGray
+highlight SpecialKey ctermfg=DarkGrey
+highlight NonText    ctermfg=DarkGrey
 set listchars=tab:\\-,trail:.,eol:$
 set list
 
