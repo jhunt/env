@@ -29,4 +29,4 @@ if [[ -z ${1} ]]; then
   exit 1
 fi
 
-check_cla ${1} ${2:CONTRIBUTORS}
+check_cla ${1} ${2:-CONTRIBUTORS}

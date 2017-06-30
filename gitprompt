@@ -9,21 +9,21 @@ use strict;
 
 # Examples:
 #   Legacy style (mcanz):
-#     export PS0='[\t]\[\e[36m\]%{(%b)\[\e[0;1m\][%c%u%f%t]%}\[\e[0m\]\u\$ '
+#     export PSGIT='[\t]\[\e[36m\]%{(%b)\[\e[0;1m\][%c%u%f%t]%}\[\e[0m\]\u\$ '
 #     export PROMPT_COMMAND=$PROMPT_COMMAND';export PS1=$(gitprompt.pl statuscount=1)'
 #   Trailing symbols (ewastl):
-#     export PS0='...%{[%b\[\e[0m\]%c%u%f%t\[\e[30;1m\]]%}\[\e[0m\]...'
+#     export PSGIT='...%{[%b\[\e[0m\]%c%u%f%t\[\e[30;1m\]]%}\[\e[0m\]...'
 #     export PROMPT_COMMAND=$PROMPT_COMMAND';export PS1=$(gitprompt.pl c=\+ u=\~ f=\* statuscount=1)'
 #   Change branchname color (inspired by amirabella):
-#     export PS0='%{[\[%f%c%u%t\]%b\[\e[0m\]]%}\[\e[0m\]\u\$ '
+#     export PSGIT='%{[\[%f%c%u%t\]%b\[\e[0m\]]%}\[\e[0m\]\u\$ '
 #     export PROMPT_COMMAND=$PROMPT_COMMAND';export PS1=$(gitprompt.pl c=%e[32m u=%e[31m f=%e[35m t=%e[30\;1m)'
 #   Colored counts instead of flags (cmaher):
-#     export PS0='%{\[\e[0;36m\](\[\e[1;36m\]%b\[\e[0;36m\])[%c%u%f%t\[\e[0;36m\]]%}\[\e[0m\]$ '
+#     export PSGIT='%{\[\e[0;36m\](\[\e[1;36m\]%b\[\e[0;36m\])[%c%u%f%t\[\e[0;36m\]]%}\[\e[0m\]$ '
 #     export PROMPT_COMMAND=$PROMPT_COMMAND';export PS1=$(gitprompt.pl statuscount=1 u=%[%e[31m%] c=%[%e[32m%] f=%[%e[1\;30m%])'
 #
 #
 # Format codes:
-#   These can be placed in PS0 or the option definitions.  In PS0, bash escapes
+#   These can be placed in PSGIT or the option definitions.  In PSGIT, bash escapes
 #   should be preferred when available.
 #
 #   %b - current branch name
@@ -68,7 +68,7 @@ use strict;
 #   PROMPT_COMMAND line instead:
 #     export PROMPT_COMMAND='export PS1=$(gitprompt.pl ...)'
 # - A good rule of thumb is to use real bash escapes (backslash flavor) inside
-#   the definition for PS0 (where escaping is normal) and gitprompt.pl escapes
+#   the definition for PSGIT (where escaping is normal) and gitprompt.pl escapes
 #   (percent flavor) inside the arguments to gitprompt.pl (where escaping is
 #   troublesome).
 # - To prevent your prompt from getting garbled, wrap all nonprinting sequences
@@ -88,9 +88,9 @@ use IPC::Open3;
 use Time::HiRes qw(time);
 
 ### prechecks ###
-my $ps0 = $ENV{PS0};
+my $ps0 = $ENV{PSGIT};
 unless ($ps0) {
-  print "!define PS0!> ";
+  print "!define PSGIT!> ";
   exit 1;
 }
 
