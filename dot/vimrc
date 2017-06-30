@@ -64,6 +64,7 @@ highlight SpecialKey ctermfg=DarkGrey
 highlight NonText    ctermfg=DarkGrey
 set listchars=tab:\\-,trail:.,eol:$
 set list
+"set nolist number " for demo only!
 
 " Show line numbers in Dark Gray, and use as little space
 " as possible on the left margin for displaying them.
@@ -190,7 +191,10 @@ if has("autocmd")
   au BufNewFile,BufRead *.git/COMMIT_EDITMSG    set tw=72 wrap | call setpos('.', [0, 1, 1, 0])
 
   " Treat *.tt as HTML
-  au BufNewFile,BufRead *.tt                    set ft=html
+  au BufNewFile,BufRead *.tt                    set ft=html et ts=2 sts=2 sw=2
+
+  " HTML/CSS/JS files ought not have tabs
+  au BufNewFile,BufRead *.html,*.css,*.js       set et ts=2 sts=2 sw=2
 
   " Treat *.lsp, *.ll, *.lisp as LISP
   au BufNewFile,BufRead *.lsp,*.ll,*.lisp       set ft=lisp et ts=2 sts=2 sw=2
@@ -216,7 +220,7 @@ if has("autocmd")
   " Always set cursor position to 0,0 for git commit messages
   au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 
-  au BufNewFile *.t 0r ~/.vim/templates/test.t
+  "au BufNewFile *.t 0r ~/.vim/templates/test.t
   au BufNewFile *.t set ft=perl
 
   " Handle Bash-specific syntax for modelines that set ft=bash
