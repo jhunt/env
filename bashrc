@@ -66,7 +66,7 @@ fi
 
 demomode() {
 	export PS1=$(echo "%G[\u] %B[\w] %Y[→] " | $HOME/env/colorize);
-	export PS0="$PS1 "
+	export PSGIT="$PS1 "
 	clear
 }
 
