@@ -1,6 +1,7 @@
 *.o
 *.gcno
 *.gcda
+*.gcov
 *~
 .*.sw?
 .DS_Store
