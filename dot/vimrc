@@ -205,7 +205,11 @@ if has("autocmd")
   " Treat *.md as Markdown
   au BufNewFile,BufRead *.md                    set ft=markdown tw=66
 
+  " Treat *.scm as Scheme source code
   au BufNewFile,BufRead *.scm                   set ft=scheme et
+
+  " Treat *.gcov as GNU gcov code coverage reports
+  au BufNewFile,BufRead *.gcov                  set ft=gcov
 
   " Treat *.1 as man page source files
   au BufNewFile,BufRead *.1,*.2,*.3,*.4,*.5,*.6,*.7,*.8,*.9 set ft=nroff
