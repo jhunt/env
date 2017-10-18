@@ -42,7 +42,8 @@ fi
 [ -z $PROMPT_ADDR ] || PROMPT_ADDR="$PROMPT_ADDR "
 
 PROMPT_TT=""
-if [[ -x $HOME/bin/tt ]]; then
+type tt >/dev/null 2>&1
+if [[ $? == 0 ]]; then
 	PROMPT_TT=':%C[$(tt --prompt)]'
 fi
 
