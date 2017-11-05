@@ -1,0 +1,151 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use POSIX qw/ceil/;
+
+if ($ARGV[0] && $ARGV[0] =~ m/^(-h|--help|help)$/) {
+	print <<EOF;
+USAGE: $0 <binfmt.def
+
+Format of the `binfmt.def` file is as follows:
+----
+# comments start with '#' and run to end of line
+# blank lines are ignored.
+
+# each 'cell' is a byte width followed by the name
+# in the diagram:
+
+1 VERSION
+2 FLAGS
+1 RESERVED
+4 LENGTH
+1 TAG
+1 TYPE
+2 LEN
+4 VALUE
+
+# '-' means "arbitrary range"
+- ETC.
+----
+EOF
+	exit 0;
+}
+
+sub rail {
+	my ($prefix, $cell, $width) = @_;
+	print $prefix;
+	while ($width--) {
+		print "+".("-" x $cell);
+	}
+	print "+\n";
+}
+
+my @blocks;
+my $cell = 8;
+my $width = 8;
+
+sub cell {
+	my ($bytes, $label, $addr, $n) = @_;
+	my $wide = 2 + ((length($label) - (($bytes - 1)*3)) / $bytes);
+	if ($wide > $cell) {
+		$cell = $wide;
+	}
+	push @blocks, [$bytes, $label, $addr, $n];
+}
+
+my $n = 0;
+while (<>) {
+	chomp;
+	s/^\s*#.*//;
+	next if m/^\s*$/;
+
+	if (m/^---+/) {
+		$n = 0;
+		push @blocks, [];
+		next;
+	}
+	m/^(\S+)\s+(.*?)$/ or die "invalid line: '$_'\n";
+	my ($bytes, $label) = ($1, $2);
+	my $addr = undef;
+
+	if ($bytes =~ m/^\d+$/) {
+	} elsif ($bytes eq '-') {
+		if ($n % $width != 0) {
+			my $fill = $width - ($n % $width);
+			$n += $fill;
+			cell($fill, "", $addr, $n);
+		}
+		$bytes = $width;
+		$addr = '*';
+	} else {
+		die "invalid byte specifier '$bytes'\n";
+	}
+	my $left = $width - $n % $width;
+	while ($bytes > $left) {
+		$bytes -= $left;
+		$n += $left;
+		cell($left, $label, $addr, $n);
+		$left = $width;
+	}
+	if ($n % $width != 0) {
+		my $fill = $width - ($n % $width);
+		while ($bytes > $fill) {
+			$n += $fill;
+			$bytes -= $fill;
+			$fill = $width - ($n % $width);
+			cell($fill, $label, $addr, $n);
+		}
+	}
+	$n += $bytes;
+	cell($bytes, $label, $addr, $n);
+}
+
+$n = 0;
+for my $block (reverse @blocks) {
+	if (!@$block) {
+		$n = 0;
+		next;
+	}
+	if (!$n) {
+		$n = $block->[3];
+	}
+	$block->[3] = $n - $block->[3] + $block->[0];
+}
+#use Data::Dumper; print Dumper(\@blocks); exit 1;
+
+$n = 0;
+my $base = 0;
+for my $block (@blocks) {
+	if (!@$block) {
+		if ($n % $width == 0) {
+			rail("     ", $cell, $width);
+		} else {
+			print "\n";
+			rail("     ", $cell, $n % $width);
+		}
+		print "\n\n";
+		$base += $n;
+		$n = 0;
+		next;
+	}
+	if ($n % $width == 0) {
+		rail("     ", $cell, $width);
+		if (@$block && $block->[2]) {
+			printf "%4s |", $block->[2];
+		} else {
+			printf "%4d |", $base + $n;
+		}
+	}
+	my $w = $block->[0] * ($cell + 1) - 1;
+	printf "%-${w}s|", " $block->[1] ";
+	$n += $block->[0];
+	if ($n % $width == 0) {
+		print "\n";
+	}
+}
+if ($n % $width != 0) {
+	print "\n";
+	rail("     ", $cell, $n % $width);
+} else {
+	rail("     ", $cell, $width);
+}
