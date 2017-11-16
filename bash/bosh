@@ -32,27 +32,45 @@ bosh() {
 		return $?
 		;;
 
-	(msync)
-		dest=$2
-		if [[ -z ${dest} ]]; then
-			echo >&2 "Usage: bosh msync /path/to/save/to"
-			return 1
-		fi
+	# broken
+	#(msync)
+	#	dest=$2
+	#	if [[ -z ${dest} ]]; then
+	#		echo >&2 "Usage: bosh msync /path/to/save/to"
+	#		return 1
+	#	fi
 
-		mkdir -p ${dest}
-		for deployment in $(bosh curl /deployments | jq -r .[].name); do
-			bosh download manifest ${deployment} ${dest}/${deployment}.yml
-		done
+	#	mkdir -p ${dest}
+	#	for deployment in $(bosh curl /deployments | jq -r .[].name); do
+	#		bosh download manifest ${deployment} ${dest}/${deployment}.yml
+	#	done
+	#	return 0
+	#	;;
+
+	(is)
+		if [[ -n "$2" ]]; then
+			export BOSH_ENVIRONMENT="$2"
+			if [[ -n "$3" ]]; then
+				export BOSH_DEPLOYMENT="$3"
+			fi
+		fi
+		echo "bosh director: ${BOSH_ENVIRONMENT:-(not set)}"
+		echo "deployment:    ${BOSH_DEPLOYMENT:-(not set)}"
+		return 0
+		;;
+
+	(clear)
+		unset BOSH_ENVIRONMENT BOSH_DEPLOYMENT BOSH_MANIFEST
 		return 0
 		;;
 
 	(rere)
-		command bosh create release --force && bosh upload release && bosh -n deploy
+		\bosh2 create-release --force && \bosh2 upload-release && \bosh2 -n deploy ${BOSH_MANIFEST:?set BOSH_MANIFEST first}
 		return $?
 		;;
 
 	(*)
-		command bosh "$@"
+		command bosh2 "$@"
 		return $?
 		;;
 	esac
