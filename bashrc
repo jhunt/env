@@ -129,3 +129,17 @@ fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 pathify -p $HOME/bin
+
+cd() {
+	builtin cd "$1" || return
+	[ "$OLDPWD" = "$PWD" ] || if [ -f "$PWD/WIP" ]; then
+		echo; echo;
+		echo "---[ WORK IN PROGRESS ]---------------------"
+		echo "Date: $(stat -c %y "$PWD/WIP")"
+		echo
+		head -n 25 "$PWD/WIP"
+		echo
+		echo "---[ WORK IN PROGRESS ]---------------------"
+		echo; echo
+	fi
+}

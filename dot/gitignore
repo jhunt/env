@@ -1,4 +1,5 @@
 *.o
+/WIP
 *.gcno
 *.gcda
 *.gcov
