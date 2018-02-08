@@ -70,7 +70,7 @@ bosh() {
 		;;
 
 	(rere)
-		\bosh2 create-release --force && \bosh2 upload-release && \bosh2 -n deploy ${BOSH_MANIFEST:?set BOSH_MANIFEST first}
+		\bosh2 create-release --timestamp-version --force && \bosh2 upload-release && \bosh2 -n deploy ${BOSH_MANIFEST:?set BOSH_MANIFEST first}
 		return $?
 		;;
 
