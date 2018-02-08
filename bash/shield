@@ -1,0 +1,34 @@
+# bashrc for BOSH hacking
+
+#
+# Wrap the main shield command to support injected sub-commands
+#
+#  shield is             Make Bosh Target Great Again!
+#
+#  shield *              Hand off to the main bosh binary
+#
+shield() {
+	case ${1} in
+	(is)
+		if [[ -n "$2" ]]; then
+			export SHIELD_CORE="$2"
+			if [[ -n "$3" ]]; then
+				export SHIELD_TENANT="$3"
+			fi
+		fi
+		echo "shield core: ${SHIELD_CORE:-(not set)}"
+		echo "cur. tenant: ${SHIELD_TENANT:-(not set)}"
+		return 0
+		;;
+
+	(clear)
+		unset SHIELD_CORE SHIELD_TENANT
+		return 0
+		;;
+
+	(*)
+		command shield "$@"
+		return $?
+		;;
+	esac
+}
