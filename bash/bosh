@@ -15,7 +15,7 @@ bosh() {
 	case ${1} in
 	(route)
 		sudo ip route del 10.244.0.0/16 && \
-		sudo ip route add 10.244.0.0/16 via 192.168.50.4
+		sudo ip route add 10.244.0.0/16 via ${2:-192.168.50.6}
 		return $?
 		;;
 
