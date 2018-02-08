@@ -26,6 +26,9 @@ alias vo='vim -O'
 # V=0 causes quiet output from automake builds
 export V=0
 
+# cf cli is a bit too judgmental of slow foundries
+export CF_DIAL_TIMEOUT=15
+
 # Bash Prompts ########################################
 
 PROMPT_HOST=
