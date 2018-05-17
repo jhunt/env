@@ -19,19 +19,20 @@ bosh() {
 		return $?
 		;;
 
-	(curl)
-		url=$2
-		if [[ -z ${url} ]]; then
-			echo >&2 "Usage: bosh curl relative-url"
-			return 1
-		fi
-		config=${BOSH_CONFIG:-$HOME/.bosh_config}
-		target=$(  spruce json $config | jq -r .target)
-		username=$(spruce json $config | jq -r '.auth["'${target}'"].username')
-		password=$(spruce json $config | jq -r '.auth["'${target}'"].password')
-		curl -Lsk --basic --user "${username}:${password}" "${target}/${url}"
-		return $?
-		;;
+	# broken
+	#(curl)
+	#	url=$2
+	#	if [[ -z ${url} ]]; then
+	#		echo >&2 "Usage: bosh curl relative-url"
+	#		return 1
+	#	fi
+	#	config=${BOSH_CONFIG:-$HOME/.bosh_config}
+	#	target=$(  spruce json $config | jq -r .target)
+	#	username=$(spruce json $config | jq -r '.auth["'${target}'"].username')
+	#	password=$(spruce json $config | jq -r '.auth["'${target}'"].password')
+	#	curl -Lsk --basic --user "${username}:${password}" "${target}/${url}"
+	#	return $?
+	#	;;
 
 	# broken
 	#(msync)
@@ -43,10 +44,14 @@ bosh() {
 
 	#	mkdir -p ${dest}
 	#	for deployment in $(bosh curl /deployments | jq -r .[].name); do
-	#		bosh download manifest ${deployment} ${dest}/${deployment}.yml
+	#		command bosh download manifest ${deployment} ${dest}/${deployment}.yml
 	#	done
 	#	return 0
 	#	;;
+
+	(ps)
+		command bosh instances --ps
+		;;
 
 	(is)
 		if [[ -n "$2" ]]; then
@@ -70,12 +75,12 @@ bosh() {
 		;;
 
 	(rere)
-		\bosh2 create-release --timestamp-version --force && \bosh2 upload-release && \bosh2 -n deploy ${BOSH_MANIFEST:?set BOSH_MANIFEST first}
+		command bosh create-release --timestamp-version --force && command bosh upload-release && command bosh -n deploy ${BOSH_MANIFEST:?set BOSH_MANIFEST first}
 		return $?
 		;;
 
 	(*)
-		command bosh2 "$@"
+		command bosh "$@"
 		return $?
 		;;
 	esac
