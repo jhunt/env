@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# keybosh - Rekey a BOSH release from known good configuration
+
+mkdir -p ~/.keybosh
+chmod 0700 ~/.keybosh
+
+if [[ ! -d config/ ]]; then
+  echo >&2 "config/ directory not found; are you in the root directory of a BOSH release?"
+  exit 1
+fi
+
+KEYSET=${1:-cfcommunity}
+if [[ ! -f ~/.keybosh/${KEYSET}.yml ]]; then
+  echo >&2 "Invalid keyset '${KEYSET}' (~/.keybosh/${KEYSET}.yml not found)"
+  exit 1
+fi
+
+chmod 0600 config/private.yml 2>/dev/null
+cp ~/.keybosh/${KEYSET}.yml config/private.yml
+chmod 0400 config/private.yml
+if ! grep -q private.yml .gitignore; then
+  echo "/config/private.yml" >> .gitignore
+fi
+
+# vim:ft=bash
