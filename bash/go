@@ -30,7 +30,11 @@ go() {
 		export GOPATH=${candidate}
 		export PATH=${PATH}:${GOPATH}/bin
 		echo "GOPATH=${GOPATH}"
-		tmux a -t "${name}" &>/dev/null || cd ${GOPATH}
+		cdto=${GOPATH}
+		if [[ -f ${GOPATH}/PRIMARY ]]; then
+			cdto=${GOPATH}/src/$(cat ${GOPATH}/PRIMARY)
+		fi
+		tmux a -t "${name}" &>/dev/null || cd $cdto
 
 	elif [[ $1 == "setup" ]]; then
 		if [[ -n $2 ]]; then
