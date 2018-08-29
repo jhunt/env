@@ -84,6 +84,7 @@ endif
 " Turn on modeline processing, so we can force certain vim
 " parameters when we don't match an autocommand.
 set modeline
+set modelines=5
 
 " Turn on marker foldmethod, to make things easier
 set foldmethod=marker
