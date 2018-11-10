@@ -19,6 +19,11 @@ bosh() {
 		return $?
 		;;
 
+	(thunder)
+		shift
+		exec command bosh ssh --gw-user netop --gw-host 10.200.131.9 --gw-private-key ~/.ssh/buffalo-lab.key "$@"
+		;;
+
 	# broken
 	#(curl)
 	#	url=$2
