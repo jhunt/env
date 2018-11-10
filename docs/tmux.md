@@ -95,4 +95,5 @@ highlighted text">
   See [tmux(1)][tmux1] for what you can do from here.
 
 
+[env]:   https://github.com/jhunt/env
 [tmux1]: https://linux.die.net/man/1/tmux
