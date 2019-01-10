@@ -1,10 +1,11 @@
 #!/bin/bash
 
-set -e
+set -eu
+test -d ${HOME:?The HOME env var is not set.  wtaf}
 
-if [[ ${1} == "init" ]]; then
+if [[ ${1:-} == "init" ]]; then
 	echo "entering initial setup"
-	case $OSTYPE in
+	case ${OSTYPE:-unknown} in
 	(darwin*)
 		echo "running on a mac..."
 		;;
@@ -32,70 +33,42 @@ if [[ ${1} == "init" ]]; then
 	esac
 fi
 
-echo "setting up dot files in ~"
+echo "setting up dot files in $HOME"
 (
-cd ~/env/dot
+cd $HOME/env/dot
 for FILE in *; do
-	cp $FILE ~/.$FILE
+	cp $FILE $HOME/.$FILE
 done
 )
 
 echo "configuring vim..."
-mkdir -p ~/.vim
-rsync -a vim/ ~/.vim/
+mkdir -p $HOME/.vim
+rsync -a vim/ $HOME/.vim/
 
-echo "copying in ~/bin scripts..."
-mkdir -p ~/bin ~/sw ~/code
-cp ~/env/bin/* ~/bin
-
-if [[ ! -f ~/bin/jq ]]; then
-	echo "  installing jq..."
-	case $OSTYPE in
-	(darwin*)
-		curl -Ls -o ~/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-osx-amd64
-		chmod 0755 ~/bin/jq
-		;;
-	(linux*)
-		curl -Ls -o ~/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
-		chmod 0755 ~/bin/jq
-		;;
-	esac
-fi
-if [[ -z "$(command -v spruce)" ]]; then
-	version=1.8.2
-	echo "  installing spruce (v${version})..."
-	case $OSTYPE in
-	(darwin*)
-		curl -Ls -o ~/bin/spruce https://github.com/geofffranks/spruce/releases/download/v${version}/spruce-darwin-amd64
-		chmod 0755 ~/bin/spruce
-		;;
-	(linux*)
-		curl -Ls -o ~/bin/spruce https://github.com/geofffranks/spruce/releases/download/v${version}/spruce-linux-amd64
-		chmod 0755 ~/bin/spruce
-		;;
-	esac
-fi
+echo "copying in $HOME/bin scripts..."
+mkdir -p $HOME/bin $HOME/sw $HOME/code
+cp $HOME/env/bin/* $HOME/bin
 
 echo "configuring git..."
-~/env/git-config
+$HOME/env/git-config
 
-echo "setting up ~/.bashrc..."
-touch ~/.bashrc
-grep -q "source $HOME/env/bashrc" ~/.bashrc || echo "source $HOME/env/bashrc" >> ~/.bashrc
-source ~/.bashrc
-if [[ ! -f ~/.bash_profile ]]; then
-	echo ". ~/.bashrc" > ~/.bash_profile
+echo "setting up $HOME/.bashrc..."
+touch $HOME/.bashrc
+grep -q "source $HOME/env/bashrc" $HOME/.bashrc || echo "source $HOME/env/bashrc" >> $HOME/.bashrc
+source $HOME/.bashrc
+if [[ ! -f $HOME/.bash_profile ]]; then
+	echo ". $HOME/.bashrc" > $HOME/.bash_profile
 fi
 
 if [[ -n ${IAMJAMESHUNT} || "${USER}" == "jhunt" || "${USER}" == "jrhunt" ]]; then
-	if [[ ! -f ~/.ssh/authorized_keys ]]; then
-		echo "setting up ~/.ssh/authorized_keys"
-		if [[ ! -d ~/.ssh ]]; then
-			mkdir -m 0700 ~/.ssh
+	if [[ ! -f $HOME/.ssh/authorized_keys ]]; then
+		echo "setting up $HOME/.ssh/authorized_keys"
+		if [[ ! -d $HOME/.ssh ]]; then
+			mkdir -m 0700 $HOME/.ssh
 		fi
 
 		MAIN_PUBLIC="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzBc3qXx9fhO6lDtGCV8URDvzPt2WaKjpuWU6BtFKXCvsa0Y0S+Ej0Xn6CS7aEK8Cs0h0ZPm04Ye6XgOT2h/asHGcKvFfsEtUG2Y0tdLGx28WKsFfYb9UFYEqb258SyKYJIbmT9SI7K4wgD0wxri6bP3W7wdSqXC+vl7fU//XF98o/cv7gpUsENnEq15+0Ed40y5XKIzNqLUFGNWirBwW0OfjYCdXyfFnqd6xvtNfchOu7uRxdSDJ5rVsBHZWfCrxHzvz6Z2S7Ui8iJ1SmIckNhE6qYMccgvp1TggTZrO6baKMc8JSnO8ClWc9mLdEJiQHkCqDtrarnHEyk26UsqlV jhunt@MAIN"
-		echo "${MAIN_PUBLIC}" > ~/.ssh/authorized_keys
-		chmod 0600 ~/.ssh/authorized_keys
+		echo "${MAIN_PUBLIC}" > $HOME/.ssh/authorized_keys
+		chmod 0600 $HOME/.ssh/authorized_keys
 	fi
 fi

@@ -51,20 +51,20 @@ if [[ $? == 0 ]]; then
 fi
 
 PROMPT_SHLVL=""
-if [[ -z $TMUX && $SHLVL != 1 ]]; then
+if [[ -z ${TMUX:-} && ${SHLVL:-} != 1 ]]; then
 	PROMPT_SHLVL="%C[sh${SHLVL}] "
 fi
-if [[ -n $TMUX && $SHLVL != 2 ]]; then
+if [[ -n ${TMUX:-} && ${SHLVL:-} != 2 ]]; then
 	PROMPT_SHLVL="%C[sh$(( SHLVL - 1 ))] "
 fi
 
 PROMPT_GO=""
-if [[ -n ${GOENV} ]]; then
+if [[ -n ${GOENV:-} ]]; then
 	PROMPT_GO="%K[${GOENV}]|"
 fi
 
 export PS1=$(echo "$PROMPT_SHLVL+$PROMPT_GO%B[\D{%%j+%%H:%%M:%%S}]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'"$PROMPT_TT %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
-if [[ -n ${SIMPLE} ]]; then
+if [[ -n ${SIMPLE:-} ]]; then
 	export PS1=$(echo "%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
 fi
 
@@ -80,7 +80,7 @@ if [[ $? == 0 ]]; then
 	export PROMPT_COMMAND='export PS1=$($HOME/env/gitprompt c=\+ u=\* statuscount=1)'
 fi
 
-case $TERM in
+case ${TERM:-unknown} in
 screen)
 	if [[ -n $PROMPT_COMMAND ]]; then
 		export PROMPT_COMMAND="$PROMPT_COMMAND;";
@@ -135,7 +135,7 @@ pathify -p $HOME/bin
 
 cd() {
 	builtin cd "$1" || return
-	[ "$OLDPWD" = "$PWD" ] || if [ -f "$PWD/WIP" ]; then
+	[ "${OLDPWD:-foo}" = "$PWD" ] || if [ -f "$PWD/WIP" ]; then
 		echo; echo;
 		echo "---[ WORK IN PROGRESS ]---------------------"
 		echo "Date: $(stat -c %y "$PWD/WIP")"
