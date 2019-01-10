@@ -55,7 +55,9 @@ $HOME/env/git-config
 echo "setting up $HOME/.bashrc..."
 touch $HOME/.bashrc
 grep -q "source $HOME/env/bashrc" $HOME/.bashrc || echo "source $HOME/env/bashrc" >> $HOME/.bashrc
+set +eu
 source $HOME/.bashrc
+set -eu
 if [[ ! -f $HOME/.bash_profile ]]; then
 	echo ". $HOME/.bashrc" > $HOME/.bash_profile
 fi
