@@ -62,7 +62,7 @@ if [[ ! -f $HOME/.bash_profile ]]; then
 	echo ". $HOME/.bashrc" > $HOME/.bash_profile
 fi
 
-if [[ -n ${IAMJAMESHUNT} || "${USER}" == "jhunt" || "${USER}" == "jrhunt" ]]; then
+if [[ -n ${IAMJAMESHUNT:-} || "${USER}" == "jhunt" || "${USER}" == "jrhunt" ]]; then
 	if [[ ! -f $HOME/.ssh/authorized_keys ]]; then
 		echo "setting up $HOME/.ssh/authorized_keys"
 		if [[ ! -d $HOME/.ssh ]]; then
