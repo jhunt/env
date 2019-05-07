@@ -21,6 +21,8 @@ fi
 alias vgmem='valgrind --leak-check=full --show-reachable=yes'
 alias rss='newsbeuter'
 alias vo='vim -O'
+alias k='kubectl'
+alias ks='kubectl -n kube-system'
 
 # Configure Environment ###############################
 # V=0 causes quiet output from automake builds

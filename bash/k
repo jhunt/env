@@ -1,0 +1,9 @@
+mkdir -p $HOME/.k
+
+kubeas() {
+  if [[ -z "${1:-}" ]]; then
+    (cd ~/.k && ls -1)
+  else
+    export KUBECONFIG=~/.k/${1}
+  fi
+}
