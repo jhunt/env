@@ -1,0 +1,35 @@
+# to be sourced
+
+to() {
+  mkdir -p ~/.whereto
+  if [[ -z ${1:-} ]]; then
+    for x in ~/.whereto/*; do
+      if [[ -L $x ]]; then
+        echo "${x##*/}|$(readlink $x)"
+      fi
+    done | column -t -s '|'
+    return 0
+  fi
+
+  if [[ ! -L ~/.whereto/$1 ]]; then
+    echo >&2 "$1: not a known whereto alias..."
+    return 1
+  fi
+
+  cd $(readlink ~/.whereto/$1)
+  return 0
+}
+
+is() {
+  mkdir -p ~/.whereto
+  if [[ -z ${1:-} || -z ${2:-} ]]; then
+    echo "USAGE: is alias path/to/destination"
+    return 1
+  fi
+  ln -sf $2 ~/.whereto/$1
+  echo "$1 -> $2"
+  echo
+  echo "You can now use \`to $1\`"
+  echo "      to get to $2"
+  return 0
+}
