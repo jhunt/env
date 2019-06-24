@@ -222,6 +222,9 @@ if has("autocmd")
   " Rubyists practice the heresy of spaces-over-tabs
   au BufNewFile,BufRead *.rb                    set et ts=2 sts=2 sw=2
 
+  " Treat *.rsc as MikoTik configurations
+  au BufRead,BufNewFile *.rsc                   set ft=rsc et ts=2 sts=2 sw=2
+
   " Always set cursor position to 0,0 for git commit messages
   au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 
