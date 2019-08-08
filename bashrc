@@ -98,9 +98,15 @@ if [[ $? != 0 ]]; then
 	PATH="$PATH:$HOME/bin"
 fi
 if [[ "$(command -v brew)" != "" ]]; then
-	PATH="$(brew --prefix coreutils)/libexec/gnubin:$(brew --prefix gnu-indent)/bin:/usr/local/sbin:/usr/local/bin:$PATH"
-	MANPATH=$(brew --prefix coreutils)/share/man:$(brew --prefix gnu-indent)/share/man:/usr/share/man:/usr/local/share/man
-	export MANPATH
+	PATH="/usr/local/sbin:/usr/local/bin:$PATH"
+	MANPATH="/usr/share/man:/usr/local/share/man"
+
+	# brew --prefix coreutils
+	if [[ -d /usr/local/opt/coreutils ]]; then
+		PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+		MANPATH="/usr/local/opt/coreutils/share/man"
+	fi
+	export PATH MANPATH
 fi
 
 if [[ -d $HOME/sw ]]; then
