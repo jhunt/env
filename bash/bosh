@@ -60,9 +60,13 @@ bosh() {
 
 	(is)
 		if [[ -n "$2" ]]; then
-			export BOSH_ENVIRONMENT="$2"
+			if [[ "$2" != "." ]]; then
+				export BOSH_ENVIRONMENT="$2"
+			fi
 			if [[ -n "$3" ]]; then
-				export BOSH_DEPLOYMENT="$3"
+				if [[ "$3" != "." ]]; then
+					export BOSH_DEPLOYMENT="$3"
+				fi
 				if [[ -n "$4" ]]; then
 					export BOSH_MANIFEST="$4"
 				fi
