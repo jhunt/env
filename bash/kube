@@ -1,0 +1,31 @@
+# bashrc for K8S hacking
+
+#
+# Wrap the main kubectl command to support injected sub-commands
+#
+#  kube is             Manage KUBECONFIG more intelligently
+#  kube *              Hand off to the main kubectl binary
+#
+k() {
+	case ${1} in
+	(is)
+		if [[ -n "$2" ]]; then
+			export KUBE="$2"
+			export KUBECONFIG="$HOME/.k/$2"
+		fi
+		echo "kubernetes: ${KUBE:-(not set)}"
+		echo "  (config): ${KUBECONFIG:-(not set)}"
+		return 0
+		;;
+
+	(clear)
+		unset KUBECONFIG
+		return 0
+		;;
+
+	(*)
+		command kubectl --kubeconfig="$KUBECONFIG" "$@"
+		return $?
+		;;
+	esac
+}
