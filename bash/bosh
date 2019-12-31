@@ -89,7 +89,7 @@ bosh() {
 		;;
 
 	(*)
-		command bosh "$@"
+		SSH_AUTH_SOCK= command bosh "$@"
 		return $?
 		;;
 	esac
