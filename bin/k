@@ -1,0 +1,35 @@
+#!/bin/sh
+set -eu
+
+tried=""
+last=""
+for c in microk8s.kubectl kubectl; do
+  if [[ "${K_DEBUG:-no}" = "yes" ]]; then
+    echo >&2 "[k]: trying $c"
+  fi
+  if command -v $c >/dev/null 2>&1; then
+    if [[ "${K_DEBUG:-no}" = "yes" ]]; then
+      echo >&2 "[k]: executing $c [$@]"
+    fi
+    exec $c "$@"
+    echo >&2 "unable to exec '$c' (check that it is a real binary?)"
+    echo >&2 "(command -v: $(command -v $c))"
+    exit 1
+  fi
+  if [[ -z ${last} ]]; then
+    last=$c
+  elif [[ -z ${tried} ]]; then
+    tried=$c
+  else
+    tried="${tried}, $c"
+  fi
+done
+
+echo >&2 "no suitable kubectl found!"
+if [[ -z $tried && -z $last ]]; then
+  echo >&2 "(to be fair, i didn't actually try to execute any candidated kubectls so ...)"
+elif [[ -z $last ]]; then
+  echo >&2 "(tried $tried)"
+else
+  echo >&2 "(tried $tried and $last)"
+fi
