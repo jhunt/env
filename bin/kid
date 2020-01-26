@@ -1,0 +1,2 @@
+#!/bin/sh
+exec k get -o jsonpath='{.items[*].metadata.name}' "$@"
