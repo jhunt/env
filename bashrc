@@ -100,11 +100,13 @@ if [[ "$(command -v brew)" != "" ]]; then
 	PATH="/usr/local/sbin:/usr/local/bin:$PATH"
 	MANPATH="/usr/share/man:/usr/local/share/man"
 
-	# brew --prefix coreutils
-	if [[ -d /usr/local/opt/coreutils ]]; then
-		PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-		MANPATH="/usr/local/opt/coreutils/share/man"
-	fi
+	# brew --prefix {core,inet}utils
+	for pkg in {core,inet}utils; do
+		if [[ -d /usr/local/opt/$pkg ]]; then
+			PATH="/usr/local/opt/$pkg/libexec/gnubin:$PATH"
+			MANPATH="/usr/local/opt/$pkg/share/man"
+		fi
+	done
 	export PATH MANPATH
 fi
 
