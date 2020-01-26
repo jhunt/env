@@ -19,9 +19,23 @@ bosh() {
 		return $?
 		;;
 
+	(ip)
+		shift
+		who=${1:-thunder-dome}
+		spruce json ~/.bosh/config | jq -r '.environments[] | select(.alias == "'$who'").url' | sed -e 's/https*:..//;s/:.*//'
+		;;
+
 	(thunder)
 		shift
-		exec command bosh ssh --gw-user netop --gw-host 10.200.131.9 --gw-private-key ~/.ssh/buffalo-lab.key "$@"
+		who=thunder-dome
+		bosh ssh --gw-user netop --gw-host $(bosh ip $who) --gw-private-key ~/.ssh/buffalo-lab.key "$@"
+		;;
+
+	(delete-releases)
+		shift
+		for x in "$@"; do
+			bosh delete-release -n $x
+		done
 		;;
 
 	# broken
