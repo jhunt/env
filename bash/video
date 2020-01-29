@@ -14,10 +14,10 @@ _this_take=1
 take() {
   clear;
   echo; echo "   take"; echo
-  figlet -f banner3 " $this_take"
+  figlet -f banner3 " $_this_take"
   echo; echo; echo; echo; echo; echo
 
-  this_take=$((this_take + 1))
+  _this_take=$((_this_take + 1))
   sleep ${TAKE_SLEEP:-5}
   clear
 }
