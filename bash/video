@@ -1,0 +1,25 @@
+#
+# This source-able file defines a function
+# called `take` that does some video signalling
+# to make life easier when recording and trying
+# to find the marks BETWEEN takes.
+#
+# To use it, start recording in a new shell.
+# When things go pear-shaped, run `take`.
+#
+# Requires figlet (brew install figlet)
+#
+
+_this_take=1
+take() {
+  clear;
+  echo; echo "   take"; echo
+  figlet -f banner3 " $this_take"
+  echo; echo; echo; echo; echo; echo
+
+  this_take=$((this_take + 1))
+  sleep ${TAKE_SLEEP:-5}
+  clear
+}
+
+# vim:ft=bash
