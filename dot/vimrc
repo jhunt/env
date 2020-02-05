@@ -231,6 +231,9 @@ if has("autocmd")
   "au BufNewFile *.t 0r ~/.vim/templates/test.t
   au BufNewFile *.t set ft=perl
 
+  " Rust should also expand tabs, since rustfmt does it anyway
+  au BufNewFile,BufRead *.rs                     set ft=rust et ts=4 sts=4 sw=4
+
   " Handle Bash-specific syntax for modelines that set ft=bash
   function! BashSyntax()
     if &ft == "bash"
