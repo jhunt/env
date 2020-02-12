@@ -61,7 +61,7 @@ fi
 
 PROMPT_K8S=""
 if command -v kubectx > /dev/null; then
-	PROMPT_K8S='%M[$(kubectx -c)]:%G[$(kubens -c)]|'
+	PROMPT_K8S='%M[$(kubectx -c)]:%G[$(kubens -c)] +'
 fi
 
 export PS1=$(echo "$PROMPT_SHLVL+$PROMPT_K8S%B[\D{%%j+%%H:%%M:%%S}]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'"$PROMPT_TT %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
