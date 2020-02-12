@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+my $n = shift @ARGV || die "USAGE: $0 N\n";
+$n =~ s/^k(.*)s$/$1/;
+print "k";
+while ($n > 8) {
+  print "uber";
+  $n -= 4;
+}
+if ($n == 7) {
+  print "uba";
+  $n -= 3;
+}
+while ($n > 4) {
+  print "n";
+  $n--;
+}
+print "netes\n";
