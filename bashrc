@@ -108,6 +108,10 @@ if [[ "$(command -v brew)" != "" ]]; then
 		fi
 	done
 	export PATH MANPATH
+
+	if brew list | grep -q bash-completion; then
+		source $(brew --prefix)/etc/bash_completion
+	fi
 fi
 
 if [[ -d $HOME/sw ]]; then
