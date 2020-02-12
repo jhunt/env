@@ -59,12 +59,12 @@ if [[ -n ${TMUX:-} && ${SHLVL:-} != 2 ]]; then
 	PROMPT_SHLVL="%C[sh$(( SHLVL - 1 ))] "
 fi
 
-PROMPT_GO=""
-if [[ -n ${GOENV:-} ]]; then
-	PROMPT_GO="%K[${GOENV}]|"
+PROMPT_K8S=""
+if command -v kubectx > /dev/null; then
+	PROMPT_K8S='%M[$(kubectx -c)]:%G[$(kubens -c)]|'
 fi
 
-export PS1=$(echo "$PROMPT_SHLVL+$PROMPT_GO%B[\D{%%j+%%H:%%M:%%S}]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'"$PROMPT_TT %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
+export PS1=$(echo "$PROMPT_SHLVL+$PROMPT_K8S%B[\D{%%j+%%H:%%M:%%S}]:%Y[\!]:"'$(r=$?; test $r -ne 0 && echo "%R[$r]" || echo "%Y[$r]")'"$PROMPT_TT %M[$PROMPT_ADDR]%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
 if [[ -n ${SIMPLE:-} ]]; then
 	export PS1=$(echo "%G[\u@$PROMPT_HOST] %B[\w\n]%G[→] " | $HOME/env/colorize);
 fi
