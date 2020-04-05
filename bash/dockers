@@ -8,3 +8,9 @@ cmus() {
              -v $HOME/Music:/music \
              docker/cmus:latest "$@"
 }
+
+ytdl() {
+  docker run --rm -it \
+             -v $HOME/Music:/media \
+             filefrog/ytdl:latest "$@"
+}
