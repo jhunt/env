@@ -1,0 +1,10 @@
+#!/bin/true
+# vim:ft=bash:et:sts=2:sw=2:ts=2
+
+cmus() {
+  docker run --rm -it \
+             --device /dev/snd \
+             -e "USERNAME=$USERNAME" \
+             -v $HOME/Music:/music \
+             docker/cmus:latest "$@"
+}
