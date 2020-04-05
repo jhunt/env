@@ -1,0 +1,2 @@
+#!/bin/sh
+docker ps --format '{{.Names}} {{.Label "conky"}}|{{.Status}}' | sed -e 's/.*\[/\[/; s/^/ /' | tr A-Z a-z | column -t -s '|'
