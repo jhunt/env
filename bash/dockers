@@ -2,10 +2,11 @@
 # vim:ft=bash:et:sts=2:sw=2:ts=2
 
 cmus() {
-  docker stop cmus || true
+  local name=cmus
+  docker stop $name &>/dev/null || true
   docker run --rm -it \
              --device /dev/snd \
-             --name cmus \
+             --name $name \
              -e "USERNAME=$USERNAME" \
              -v $HOME/Music:/music \
              docker/cmus:latest "$@"
