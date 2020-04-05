@@ -19,6 +19,16 @@ gpg() {
              docker/gpg:latest "$@"
 }
 
+htop() {
+  local name=htop
+  docker stop $name &>/dev/null || true
+  docker run --rm -it \
+             --name $name \
+             -u $UID \
+             --pid=host \
+             docker/htop htop "$@"
+}
+
 ytdl() {
   docker run --rm -it \
              -l 'conky=[ytdl]' \
