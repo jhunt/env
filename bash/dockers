@@ -11,6 +11,14 @@ cmus() {
              docker/cmus:latest "$@"
 }
 
+gpg() {
+  docker run --rm -it \
+             -l 'conky=[gpg]' \
+             -u $UID \
+             -v $HOME:/home \
+             docker/gpg:latest "$@"
+}
+
 ytdl() {
   docker run --rm -it \
              -l 'conky=[ytdl]' \
