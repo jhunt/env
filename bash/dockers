@@ -13,6 +13,7 @@ cmus() {
 
 ytdl() {
   docker run --rm -it \
+             -l 'conky=[ytdl]' \
              -v $HOME/Music:/media \
              filefrog/ytdl:latest "$@"
 }
