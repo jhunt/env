@@ -30,6 +30,20 @@ htop() {
              docker/htop htop "$@"
 }
 
+verse() {
+  local opts=
+  local cmd=""
+  if [[ -z "${1:-}" ]]; then
+    opts="-p ${PORT:-4000}:4000"
+    cmd=demo
+  fi
+  docker run --rm -it $opts \
+             -l "conky=[verse]" \
+             -u $UID \
+             -v $PWD:/web -w /web \
+             huntprod/verse $cmd "$@"
+}
+
 ytdl() {
   docker run --rm -it \
              -l 'conky=[ytdl]' \
