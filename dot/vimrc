@@ -36,6 +36,9 @@ if exists("+nocompatible")
 	set nofileignorecase
 endif
 
+" allow bash functions in exec mode (:!func)
+set shellcmdflag=-ic
+
 " handle looooong lines in YAML files
 set maxmempattern=8192
 
