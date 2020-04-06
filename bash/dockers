@@ -15,7 +15,7 @@ cmus() {
 gpg() {
   docker run --rm -it \
              -l 'conky=[gpg]' \
-             -u $UID \
+             -u $(id -u) \
              -v $HOME:/home \
              docker/gpg:latest "$@"
 }
@@ -25,7 +25,7 @@ htop() {
   docker stop $name &>/dev/null || true
   docker run --rm -it \
              --name $name \
-             -u $UID \
+             -u $(id -u) \
              --pid=host \
              docker/htop htop "$@"
 }
@@ -57,7 +57,7 @@ verse() {
   fi
   docker run --rm -it $opts \
              -l "conky=[verse]" \
-             -u $UID \
+             -u $(id -u) \
              -v $PWD:/web -w /web \
              huntprod/verse $cmd "$@"
 }
