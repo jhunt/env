@@ -159,3 +159,10 @@ cd() {
 		echo; echo
 	fi
 }
+
+case ${OSTYPE:-UNKNOWN} in
+linux-gnu)
+	alias pbcopy='xclip -selection CLIPBOARD -i'
+	alias pbpaste='xclip -selection CLIPBOARD -o'
+	;;
+esac
