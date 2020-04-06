@@ -45,6 +45,19 @@ getpass() {
   pass show -c "$@"
 }
 
+slack() {
+  local name=slack
+  mkdir -p $HOME/.ephemeral/$name
+  if [[ ! -f $HOME/.ephemeral/$name/config ]]; then
+    echo '{}' > $HOME/.ephemeral/$name/config
+  fi
+  docker stop $name &>/dev/null || true
+  docker run --rm -it \
+             --name $name \
+             -u $(id -u) \
+             -v $HOME/.ephemeral/$name/config:/config \
+             erroneousboat/slack-term
+}
 
 twitter() {
   local name=twitter
