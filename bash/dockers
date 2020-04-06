@@ -30,6 +30,24 @@ htop() {
              docker/htop htop "$@"
 }
 
+twitter() {
+  local name=twitter
+  mkdir -p $HOME/.ephemeral/$name
+  if [[ ! -f $HOME/.ephemeral/$name/config.json ]]; then
+    docker run --rm --entrypoint='' jess/rainbowstream cat /root/.rainbow_config.json > $HOME/.ephemeral/$name/config.json
+  fi
+  touch $HOME/.ephemeral/$name/oauth
+  docker stop $name &>/dev/null || true
+  docker run --rm -it \
+             --name $name \
+             -u $(id -u) \
+             -e HOME=/tmp \
+             -v /etc/localtime:/etc/localtime:ro \
+             -v $HOME/.ephemeral/$name/config.json:/tmp/.rainbow_config.json \
+             jess/rainbowstream
+#             -v $HOME/.ephemeral/$name/oauth:/root/.rainbow_oauth \
+}
+
 verse() {
   local opts=
   local cmd=""
