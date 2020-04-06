@@ -30,6 +30,22 @@ htop() {
              docker/htop htop "$@"
 }
 
+pass() {
+  docker run --rm -it \
+             -l "conky=[pass]" \
+             -u $(id -u) \
+             -e HOME=/home \
+             -v $HOME:/home \
+             -v /tmp/.X11-unix:/tmp/.X11-unix \
+             -e "DISPLAY=unix$DISPLAY" \
+             docker/pass "$@"
+}
+
+getpass() {
+  pass show -c "$@"
+}
+
+
 twitter() {
   local name=twitter
   mkdir -p $HOME/.ephemeral/$name
