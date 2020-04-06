@@ -60,8 +60,8 @@ twitter() {
              -e HOME=/tmp \
              -v /etc/localtime:/etc/localtime:ro \
              -v $HOME/.ephemeral/$name/config.json:/tmp/.rainbow_config.json \
+             -v $HOME/.ephemeral/$name/oauth:/tmp/.rainbow_oauth \
              jess/rainbowstream
-#             -v $HOME/.ephemeral/$name/oauth:/root/.rainbow_oauth \
 }
 
 verse() {
