@@ -22,6 +22,7 @@ alias vgmem='valgrind --leak-check=full --show-reachable=yes'
 alias rss='newsbeuter'
 alias vo='vim -O'
 alias ks='k -n kube-system'
+alias dr='docker run -it --rm'
 
 # Configure Environment ###############################
 # V=0 causes quiet output from automake builds
