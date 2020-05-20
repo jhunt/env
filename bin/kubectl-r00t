@@ -1,0 +1,2 @@
+#!/bin/bash
+exec kubectl run r00t-p$$ --restart=Never -it --rm --image f00 --overrides '{"spec":{"hostNetwork": true, "hostPID": true, "containers":[{"name":"1","image":"alpine","command":["nsenter","--mount=/proc/1/ns/mnt","--","/bin/bash"],"stdin":true,"tty":true,"securityContext":{"privileged":true}}]}}' "$@"
