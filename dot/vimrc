@@ -222,6 +222,10 @@ if has("autocmd")
   au BufNewFile,BufRead *.yml                   set ft=yaml et ts=2 sts=2 sw=2
   au BufNewFile,BufRead *.yaml                  set ft=yaml et ts=2 sts=2 sw=2
 
+  " Treat *.s?css as CSS/SaSS
+  au BufNewFile,BufRead *.css                   set et ts=2 sts=2 sw=2
+  au BufNewFile,BufRead *.scss                  set et ts=2 sts=2 sw=2
+
   " Rubyists practice the heresy of spaces-over-tabs
   au BufNewFile,BufRead *.rb                    set et ts=2 sts=2 sw=2
 
