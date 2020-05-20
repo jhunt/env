@@ -71,10 +71,14 @@ if [[ -n ${SIMPLE:-} ]]; then
 fi
 
 demomode() {
+	export DEMO_MODE=yes
 	export PS1=$(echo "%G[\u] %B[\w] %Y[→] " | $HOME/env/colorize);
 	export PSGIT="$PS1 "
 	clear
 }
+if [[ ${DEMO_MODE:-} = "yes" ]]; then
+	demomode
+fi
 
 type git >/dev/null 2>&1
 if [[ $? == 0 ]]; then
