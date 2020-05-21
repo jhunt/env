@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+my @k = qw/kubectl/;
+my $arg = $ARGV[0] || "jumpbox/jumpbox";
+my $label = $ARGV[0] || $arg;
+if ($label =~ m{^(.*)/(.*)$}) {
+  push @k, "-n", $1;
+  $label = $2;
+}
+
+my $k = join(" ", @k);
+my $id = `$k get -o jsonpath='{.items[*].metadata.name}' pod -l jumpbox=$label`;
+if (!$id || $? != 0) {
+  print STDERR ">> jumpbox $arg not found.\n";
+  exit 1;
+}
+exec @k, 'exec', '-it', $id, '/bin/bash';
+exit 42;
