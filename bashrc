@@ -3,6 +3,9 @@
 # env/bashrc - Making bash feel like home
 #
 
+# SILENCE APPLE NONSENSE ABOUT ZSH ####################
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 # VIM #################################################
 export EDITOR=vim
 
