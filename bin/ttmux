@@ -3,10 +3,14 @@ set -eu
 
 session=${1:-}
 if [[ -z $session ]]; then
-  echo >&2 "USAGE: $0 SESSION"
+  echo >&2 "USAGE: $0 SESSION [TAB-COLOR]"
   echo >&2 "sets the title of the terminal to SESSION"
   echo >&2 "and opens a new tmux session named SESSION"
   exit 1
+fi
+
+if [[ -n "${2:-}" ]]; then
+  tabg $2
 fi
 
 title "$session"
