@@ -101,6 +101,10 @@ bosh() {
 		command bosh create-release --timestamp-version --force && command bosh upload-release && command bosh -n deploy ${BOSH_MANIFEST:?set BOSH_MANIFEST first} --no-redact
 		return $?
 		;;
+	(dede)
+		command bosh delete-deployment -n && command bosh -n deploy ${BOSH_MANIFEST:?set BOSH_MANIFEST first} --no-redact "$@"
+		return $?
+		;;
 
 	(*)
 		SSH_AUTH_SOCK= command bosh "$@"
