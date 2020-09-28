@@ -36,9 +36,6 @@ if exists("+nocompatible")
 	set nofileignorecase
 endif
 
-" allow bash functions in exec mode (:!func)
-set shellcmdflag=-ic
-
 " handle looooong lines in YAML files
 set maxmempattern=8192
 
@@ -226,6 +223,9 @@ if has("autocmd")
   au BufNewFile,BufRead *.css                   set et ts=2 sts=2 sw=2
   au BufNewFile,BufRead *.scss                  set et ts=2 sts=2 sw=2
 
+  " Treat *.vue as Vue all-in-one files
+  au BufNewFile,BufRead *.vue                   set et ts=2 sts=2 sw=2
+
   " Rubyists practice the heresy of spaces-over-tabs
   au BufNewFile,BufRead *.rb                    set et ts=2 sts=2 sw=2
 
@@ -308,3 +308,5 @@ function! CursorPing()
 endfunction
 
 map <C-L> :call CursorPing()<CR>
+
+au FocusGained,BufEnter * :silent! !
