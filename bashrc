@@ -37,6 +37,9 @@ export CF_DIAL_TIMEOUT=15
 # Bash Prompts ########################################
 
 PROMPT_HOST=
+if [[ -n ${IN_DOCKERIZED_ENVIRONMENT} ]]; then
+	PROMPT_HOST="{$(hostname)}"
+fi
 [ -f $HOME/.host  ] && PROMPT_HOST=$(cat $HOME/.host)
 [ -z $PROMPT_HOST ] && PROMPT_HOST=$(hostname -f | sed -e 's/\.niftylogic\.net$//')
 
@@ -77,6 +80,10 @@ demomode() {
 	export DEMO_MODE=yes
 	export PS1=$(echo "%G[\u] %B[\w] %Y[→] " | $HOME/env/colorize);
 	export PSGIT="$PS1 "
+}
+zenmode() {
+	export PS1=$(echo "%Y[\!] %G[\u] %C[\w]\n\$ " | $HOME/env/colorize);
+	export PSGIT="$PS1"
 	clear
 }
 if [[ ${DEMO_MODE:-} = "yes" ]]; then
