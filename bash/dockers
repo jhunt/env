@@ -1,0 +1,99 @@
+#!/bin/true
+# vim:ft=bash:et:sts=2:sw=2:ts=2
+
+cmus() {
+  local name=cmus
+  docker stop $name &>/dev/null || true
+  docker run --rm -it \
+             --device /dev/snd \
+             --name $name \
+             -e "USERNAME=$USERNAME" \
+             -v $HOME/Music:/music \
+             docker/cmus:latest "$@"
+}
+
+gpg() {
+  docker run --rm -it \
+             -l 'conky=[gpg]' \
+             -u $(id -u) \
+             -v $HOME:/home \
+             docker/gpg:latest "$@"
+}
+
+htop() {
+  local name=htop
+  docker stop $name &>/dev/null || true
+  docker run --rm -it \
+             --name $name \
+             -u $(id -u) \
+             --pid=host \
+             docker/htop htop "$@"
+}
+
+pass() {
+  docker run --rm -it \
+             -l "conky=[pass]" \
+             -u $(id -u) \
+             -e HOME=/home \
+             -v $HOME:/home \
+             -v /tmp/.X11-unix:/tmp/.X11-unix \
+             -e "DISPLAY=unix$DISPLAY" \
+             docker/pass "$@"
+}
+
+getpass() {
+  pass show -c "$@"
+}
+
+slack() {
+  local name=slack
+  mkdir -p $HOME/.ephemeral/$name
+  if [[ ! -f $HOME/.ephemeral/$name/config ]]; then
+    echo '{}' > $HOME/.ephemeral/$name/config
+  fi
+  docker stop $name &>/dev/null || true
+  docker run --rm -it \
+             --name $name \
+             -u $(id -u) \
+             -v $HOME/.ephemeral/$name/config:/config \
+             erroneousboat/slack-term
+}
+
+twitter() {
+  local name=twitter
+  mkdir -p $HOME/.ephemeral/$name
+  if [[ ! -f $HOME/.ephemeral/$name/config.json ]]; then
+    docker run --rm --entrypoint='' jess/rainbowstream cat /root/.rainbow_config.json > $HOME/.ephemeral/$name/config.json
+  fi
+  touch $HOME/.ephemeral/$name/oauth
+  docker stop $name &>/dev/null || true
+  docker run --rm -it \
+             --name $name \
+             -u $(id -u) \
+             -e HOME=/tmp \
+             -v /etc/localtime:/etc/localtime:ro \
+             -v $HOME/.ephemeral/$name/config.json:/tmp/.rainbow_config.json \
+             -v $HOME/.ephemeral/$name/oauth:/tmp/.rainbow_oauth \
+             jess/rainbowstream
+}
+
+verse() {
+  local opts=
+  local cmd=""
+  if [[ -z "${1:-}" ]]; then
+    opts="-p ${PORT:-4000}:4000"
+    cmd=demo
+  fi
+  docker run --rm -it $opts \
+             -l "conky=[verse]" \
+             -u $(id -u) \
+             -v $PWD:/web -w /web \
+             huntprod/verse $cmd "$@"
+}
+
+ytdl() {
+  docker run --rm -it \
+             -l 'conky=[ytdl]' \
+             -v $HOME/Music:/media \
+             filefrog/ytdl:latest "$@"
+}

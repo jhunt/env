@@ -1,0 +1,30 @@
+#!/bin/bash
+set -eu
+
+#
+# git-wut
+# Is this git working copy in good shape?
+# No uncommited changes?
+# No local, non-master branches?
+#
+
+rc=0
+if [[ $# -ne 0 ]]; then
+	for dir in "$@"; do
+		(cd $dir; if ! $0; then rc=1; fi)
+	done
+	exit $rc
+fi
+test -d .git || exit 0
+
+repo=$(basename $(pwd))
+if [[ -n $(git status --porcelain) ]]; then
+	echo "$repo has uncommitted local changes"
+	rc=1
+fi
+if [[ -n $(git branch | grep -v ' master$') ]]; then
+	echo "$repo has local branches that aren't master"
+	rc=1
+fi
+
+exit $rc

@@ -28,8 +28,13 @@ go() {
 
 		[[ -n ${GOPATH} ]] && pathify -r ${GOPATH}/bin -a ${candidate}/bin
 		export GOPATH=${candidate}
+		export PATH=${PATH}:${GOPATH}/bin
 		echo "GOPATH=${GOPATH}"
-		tmux a -t "${name}" &>/dev/null || cd ${GOPATH}
+		cdto=${GOPATH}
+		if [[ -f ${GOPATH}/PRIMARY ]]; then
+			cdto=${GOPATH}/src/$(cat ${GOPATH}/PRIMARY)
+		fi
+		tmux a -t "${name}" &>/dev/null || cd $cdto
 
 	elif [[ $1 == "setup" ]]; then
 		if [[ -n $2 ]]; then
@@ -37,11 +42,6 @@ go() {
 			mkdir -p ${HOME}/code/go/$2
 			go be $2
 		fi
-		command go get github.com/golang/lint/golint && \
-		command go get github.com/onsi/ginkgo && \
-		command go get github.com/onsi/ginkgo/ginkgo && \
-		command go get github.com/onsi/gomega && \
-		command go get github.com/mitchellh/gox && \
 		true
 		return $?
 

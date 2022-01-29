@@ -1,0 +1,17 @@
+#!/bin/bash
+set -eu
+
+if [[ -z "${1:-}" ]]; then
+  exec git clone -h
+fi
+
+for wut in "$@"; do
+  case $wut in
+  git@*)      git clone "$wut" ;;
+  -*)         git clone "$wut" ;;
+  http:*)     git clone "$wut" ;;
+  https:*)    git clone "$wut" ;;
+  */*) shift; git clone git@github.com:$wut ;;
+  *)   shift; git clone git@github.com:jhunt/$wut ;;
+  esac
+done

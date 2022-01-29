@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ -z "$1" ]]; then
+  echo >&2 "USAGE: git track [REMOTE] BRANCH"
+  exit 2
+fi
+
+remote=origin
+branch=$1
+if [[ -n "$2" ]]; then
+  remote=$1
+  branch=$2
+fi
+
+set -x
+git checkout -b $branch -t $remote/$branch

@@ -1,7 +1,11 @@
 #!/usr/bin/perl
 
 if ($ARGV[0] =~ m/.*\.t$/) {
-	print `prove --merge -lv $ARGV[0]`;
+	if (-f 'cpanfile') {
+		print `carton exec prove --merge -lv $ARGV[0]`;
+	} else {
+		print `prove --merge -lv $ARGV[0]`;
+	}
 	exit $?;
 }
 

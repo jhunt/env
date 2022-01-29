@@ -1,5 +1,10 @@
 *.o
+/WIP
+*.gcno
+*.gcda
+*.gcov
 *~
 .*.sw?
 .DS_Store
 *.dSYM/
+.dirstamp
