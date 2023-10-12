@@ -111,12 +111,19 @@ echo $PATH | grep -q "$HOME/bin";
 if [[ $? != 0 ]]; then
 	PATH="$PATH:$HOME/bin"
 fi
+if [[ -d /opt/homebrew/bin ]]; then
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 if [[ "$(command -v brew)" != "" ]]; then
 	PATH="/usr/local/sbin:/usr/local/bin:$PATH"
 	MANPATH="/usr/share/man:/usr/local/share/man"
 
 	# brew --prefix {core,inet}utils
 	for pkg in {core,inet}utils; do
+		if [[ -d /opt/homebrew/opt/$pkg ]]; then
+			PATH="/opt/homebrew/opt/$pkg/libexec/gnubin:$PATH"
+			MANPATH="/opt/homebrew/opt/$pkg/share/man"
+		fi
 		if [[ -d /usr/local/opt/$pkg ]]; then
 			PATH="/usr/local/opt/$pkg/libexec/gnubin:$PATH"
 			MANPATH="/usr/local/opt/$pkg/share/man"
